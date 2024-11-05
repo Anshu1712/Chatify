@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chatify.view.MainActivity;
 import com.example.chatify.R;
+import com.example.chatify.view.auth.emailverification;
 import com.example.chatify.view.auth.phoneLoginActivity;
 import com.google.android.material.button.MaterialButton;
 
@@ -25,7 +26,7 @@ public class welcomeActivity extends AppCompatActivity {
         btnAgree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(welcomeActivity.this, phoneLoginActivity.class));
+                startActivity(new Intent(welcomeActivity.this, emailverification.class));
             }
         });
        
