@@ -65,7 +65,7 @@ public class phoneLoginActivity extends AppCompatActivity {
                 String buttonText = binding.button.getText().toString();
                 if (buttonText.equals("Next")) {
                     // Format the phone number correctly (E.164 format)
-                    String phone = "+" + binding.phoneNumberEt.getText().toString() + binding.phoneNumberEt2.getText().toString();
+                    String phone =  "+91" + binding.phoneNumberEt2.getText().toString();
 
                     // Ensure the phone number is valid
                     if (isPhoneNumberValid(phone)) {
@@ -99,7 +99,7 @@ public class phoneLoginActivity extends AppCompatActivity {
             public void onVerificationFailed(@NonNull FirebaseException e) {
                 Log.d(TAG, "onVerificationFailed: " + e.getMessage());
                 progressDialog.dismiss();
-                Toast.makeText(phoneLoginActivity.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(phoneLoginActivity.this, "Verification failed:" + e.getMessage(), Toast.LENGTH_LONG).show();
             }
 
             @Override
