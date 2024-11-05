@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ToolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/md_theme_primary</item>
+        <item name="android:textStyle">italic|bold</item> add in this
+
+        <!-- You can also add textStyle, letterSpacing, etc. -->
+    </style>
+
+    <style name="ToolbarTitleStyle2" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">.05</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+
+        <!-- You can also add textStyle, letterSpacing, etc. -->
+    </style>
+
+    <style name="ToolbarSubtitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">14sp</item> <!-- Adjust the text size as needed -->
+    </style>
+
+    <style name="CustomTabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabTextColor">@color/md_theme_outline</item>
+        <item name="tabSelectedTextColor">@color/md_theme_primary</item>
+        <item name="tabIndicatorColor">@color/md_theme_primary</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+</resources>

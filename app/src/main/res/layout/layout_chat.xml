@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image_profile"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@drawable/user" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:id="@+id/tv_name"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/user_name"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/tv_date"
+                android:layout_height="wrap_content"
+                android:text="@string/_17_12_2002"
+                android:textColor="#2E2E2E"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/tv_message"
+            android:layout_height="wrap_content"
+            android:text="@string/last_message"
+            android:textColor="#2E2E2E"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>

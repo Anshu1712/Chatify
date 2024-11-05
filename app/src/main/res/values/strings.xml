@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Chatify</string>
+    <string name="chatify">chatify</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_group">New Group</string>
+    <string name="name">Priyanshu Sharma</string>
+    <string name="search">Search</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="contact">New Contact</string>
+    <string name="new_user">New Contact</string>
+    <string name="contact_on_chatify">Contact on Chatify</string>
+    <string name="bio">Bio</string>
+    <string name="account">Account</string>
+    <string name="Privacy">Privacy</string>
+    <string name="Lang">Language</string>
+    <string name="Help">Help</string>
+    <string name="setting">Setting</string>
+    <string name="Hint">Name</string>
+    <string name="about">About</string>
+    <string name="bio_update">I\'m a Chatify User</string>
+    <string name="phone">Phone</string>
+    <string name="_1234567890">1234567890</string>
+    <string name="user_name">User Name</string>
+    <string name="last_message">Last Message</string>
+    <string name="_17_12_2002">17/12/2002</string>
+    <string name="my_status">My Status</string>
+    <string name="tap_to_add_status_update">Tap to add status update</string>
+    <string name="_15_04_2020">15/04/2020, 09:10 pm</string>
+    <string name="welcome_to_chatify">Welcome to Chatify</string>
+    <string name="from">from</string>
+    <string name="f_a_c_e_b_o_o_k">F A C E B O O K</string>
+    <string name="enter_your_phone_number">Enter your phone number</string>
+    <string name="more_options">more_options</string>
+    <string name="chatify_will_send_an_sms_message_to_verify_your_phone_number">Chatify will send an SMS message to verify your phone number.</string>
+    <string name="select_country">select</string>
+    <string name="next">Next</string>
+    <string name="enter_phone_number">Enter phone number</string>
+    <string name="_91">91</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="none_of_your_contact_are_using_chatify">None of your contact are using Chatify. \Use the button below to invite them to Chatify.</string>
+    <string name="chat_with_your_friends_who_use_chatify">Chat with Your friends who use Chatify</string>
+</resources>
