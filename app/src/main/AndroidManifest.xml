@@ -31,10 +31,10 @@
             android:name=".view.startup.welcomeActivity"
             android:exported="false" />
         <activity
-            android:name=".view.auth.Profile"
+            android:name=".view.Profile.Profile"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".view.setting.SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".NewGroup"

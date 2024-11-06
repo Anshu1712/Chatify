@@ -1,17 +1,10 @@
 package com.example.chatify.view.auth;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.chatify.R;
 import com.google.android.material.button.MaterialButton;
@@ -40,12 +33,12 @@ public class emailverification extends AppCompatActivity {
             public void onClick(View view) {
                 String emailAddress = email.getText().toString();
                 String pass = password.getText().toString();
-                registerUser(emailAddress,pass);
+                registerUser(emailAddress, pass);
             }
         });
     }
 
-    private void registerUser(String emailAddress,String password) {
+    private void registerUser(String emailAddress, String password) {
 
         auth.createUserWithEmailAndPassword(emailAddress, password)
                 .addOnCompleteListener(this, task -> {
