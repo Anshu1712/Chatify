@@ -40,4 +40,7 @@
     <string name="enter_code">Enter Code</string>
     <string name="none_of_your_contact_are_using_chatify">None of your contact are using Chatify. \Use the button below to invite them to Chatify.</string>
     <string name="chat_with_your_friends_who_use_chatify">Chat with Your friends who use Chatify</string>
+    <string name="profile_photo">Profile Photo</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">camera</string>
 </resources>

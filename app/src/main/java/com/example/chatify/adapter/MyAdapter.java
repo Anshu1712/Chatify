@@ -1,4 +1,4 @@
-package com.example.chatify;
+package com.example.chatify.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

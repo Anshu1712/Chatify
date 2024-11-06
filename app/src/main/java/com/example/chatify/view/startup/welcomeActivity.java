@@ -26,7 +26,7 @@ public class welcomeActivity extends AppCompatActivity {
         btnAgree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(welcomeActivity.this, emailverification.class));
+                startActivity(new Intent(welcomeActivity.this, phoneLoginActivity.class));
             }
         });
        
