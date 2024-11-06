@@ -81,7 +81,6 @@ public class Profile extends AppCompatActivity {
 
         initActionClick();
     }
-
     private void initActionClick() {
         binding.fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +90,11 @@ public class Profile extends AppCompatActivity {
         });
     }
 
+
     private void showButtomSheetPickPhoto() {
+        if(bottomSheetDialog == null){
+            bottomSheetDialog = new BottomSheetDialog(this);
+        }
         View view = getLayoutInflater().inflate(R.layout.botton_sheet, null);
         bottomSheetDialog.setContentView(view);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
