@@ -2,12 +2,17 @@ package com.example.chatify.view.Profile;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
@@ -46,6 +51,9 @@ public class Profile extends AppCompatActivity {
 
     private BottomSheetDialog bottomSheetDialog;
 
+    private int IMAGE_GALLERY_REQUEST = 111;
+    private Uri  imageUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +89,7 @@ public class Profile extends AppCompatActivity {
 
         initActionClick();
     }
+
     private void initActionClick() {
         binding.fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,11 +101,28 @@ public class Profile extends AppCompatActivity {
 
 
     private void showButtomSheetPickPhoto() {
-        if(bottomSheetDialog == null){
+
+        ((View) view.findViewById(R.id.gallery1)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGallery();
+                bottomSheetDialog.dismiss();
+            }
+        });
+        ((View) view.findViewById(R.id.gallery1)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Camera Clicked", Toast.LENGTH_SHORT).show();
+                bottomSheetDialog.dismiss();
+            }
+        });
+        if (bottomSheetDialog == null) {
             bottomSheetDialog = new BottomSheetDialog(this);
         }
         View view = getLayoutInflater().inflate(R.layout.botton_sheet, null);
         bottomSheetDialog.setContentView(view);
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Objects.requireNonNull(bottomSheetDialog.getWindow()).addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
@@ -174,5 +200,29 @@ public class Profile extends AppCompatActivity {
         // Start the activity and finish the current one (Profile activity)
         startActivity(intent);
         finish();
+    }
+
+    private void openGallery() {
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select image"), IMAGE_GALLERY_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
+                binding.Change.setImageBitmap(bitmap);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
