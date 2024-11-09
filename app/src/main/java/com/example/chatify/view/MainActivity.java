@@ -14,12 +14,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.chatify.AddContact;
+import com.example.chatify.view.contact.AddContact;
 import com.example.chatify.menu.Fragment_Call;
 import com.example.chatify.menu.Fragment_Chat;
 import com.example.chatify.menu.Fragment_Status;
 import com.example.chatify.adapter.MyAdapter;
-import com.example.chatify.NewGroup;
+import com.example.chatify.view.contact.NewGroup;
 import com.example.chatify.R;
 import com.example.chatify.view.setting.SettingsActivity;
 import com.example.chatify.databinding.ActivityMainBinding;

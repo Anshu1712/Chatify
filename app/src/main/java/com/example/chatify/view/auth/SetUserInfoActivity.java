@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SetUserInfoActivity extends AppCompatActivity {
 
+    private Spinner spinnerBio;
+
     private ActivitySetUserInfoBinding binding;  // Binding object to access views directly.
     private ProgressDialog progressDialog;  // ProgressDialog to show loading state while updating user info.
 
@@ -36,6 +40,26 @@ public class SetUserInfoActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);  // Initialize ProgressDialog to show loading indicator during update.
         initBottomClick();  // Initialize button click handlers.
+
+        // Find the Spinner in the layout
+        spinnerBio = findViewById(R.id.spinner);
+
+        // Create a list of predefined bios
+        String[] predefinedBios = new String[]{
+                "Or choose your own bio.",
+                "I love coding and building cool apps.",
+                "I am passionate about technology and learning new things.",
+                "I enjoy photography and traveling the world.",
+                "I'm a full-stack developer with a passion for mobile apps."
+        };
+
+        // Create an ArrayAdapter for the Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, predefinedBios);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set the adapter to the Spinner
+        spinnerBio.setAdapter(adapter);
+
     }
 
     private void initBottomClick() {
@@ -81,7 +105,7 @@ public class SetUserInfoActivity extends AppCompatActivity {
             Users users = new Users(userID,
                     binding.phoneNumberEt2.getText().toString(),  // Set the username input by the user.
                     firebaseUser.getPhoneNumber(),  // Set the phone number from Firebase authentication.
-                    "", "", "", "", "", "", "");  // Placeholder empty fields for other user data (could be extended later).
+                    "", "", "", "", "", "", binding.phoneNumberEt3.getText().toString());  // Placeholder empty fields for other user data (could be extended later).
 
             // Update the "Users" collection in Firestore with the new user data.
             firebaseFirestore.collection("Users")

@@ -131,7 +131,9 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         // Get the "username" from the Firestore document and display it in the layout
                         String userName = Objects.requireNonNull(documentSnapshot.get("username")).toString();
+                        String userBio = Objects.requireNonNull(documentSnapshot.get("bio")).toString();
                         binding.nameTxt.setText(userName);  // Set the fetched username to the corresponding TextView
+                        binding.bioTxt.setText(userBio);  // Set the fetched bio
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

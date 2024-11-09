@@ -43,4 +43,11 @@
     <string name="profile_photo">Profile Photo</string>
     <string name="gallery">Gallery</string>
     <string name="camera">camera</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="update">Update</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="last_seen_today">last seen today...</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="this_is_text_message">this is text message</string>
 </resources>

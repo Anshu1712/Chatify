@@ -1,4 +1,4 @@
-package com.example.chatify;
+package com.example.chatify.view.contact;
 
 import android.Manifest;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,16 +19,37 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.chatify.R;
+import com.example.chatify.adapter.ContactAdapter;
 import com.example.chatify.databinding.ActivityAddContactBinding;
+import com.example.chatify.model.user.Users;
 import com.example.chatify.view.MainActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddContact extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     private static final int PERMISSIONS_REQUEST_WRITE_CONTACTS = 101;
 
+    private static final String TAG = "AddContact";
+
     private ActivityAddContactBinding binding;
+    private List<Users> list = new ArrayList<>();
+    private ContactAdapter adapter;
+    private FirebaseUser firebaseUser;
+    private FirebaseFirestore firestore;
+
     private Toolbar toolbar;
     private ImageView imageView;
     private TextView txtView, txtView2;
@@ -40,8 +60,7 @@ public class AddContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Inflate the correct layout and set the content view
-        binding = ActivityAddContactBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_contact);
 
         // Handle edge-to-edge display insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -49,6 +68,15 @@ public class AddContact extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        binding.contactsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firestore = FirebaseFirestore.getInstance();
+
+        if (firebaseUser != null) {
+            getContactList();
+        }
 
         // Request permissions for reading and writing contacts
         requestContactPermissions();
@@ -61,30 +89,46 @@ public class AddContact extends AppCompatActivity {
         toolbar = binding.toolbar3;
         setSupportActionBar(toolbar);
 
-
         // Set up click listeners for buttons
-        txtView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), NewGroup.class);
-                startActivity(intent);
-                finish();
-            }
+        txtView2.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), NewGroup.class);
+            startActivity(intent);
+            finish();
         });
 
-        txtView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), NewContact.class);
-                startActivity(intent);
-            }
+        txtView.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), NewContact.class);
+            startActivity(intent);
         });
 
         // Set up a click listener for the back button
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(v -> navigateBackToMainActivity());
+    }
+
+    private void getContactList() {
+        firestore.collection("Users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onClick(View v) {
-                navigateBackToMainActivity();
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                // Loop through the queryDocumentSnapshots
+                for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                    // Log each snapshot data
+                    String userID = snapshot.getString("userID");
+                    String userName = snapshot.getString("username");
+                    String imageUrl = snapshot.getString("imageProfile");
+                    String userBio = snapshot.getString("bio");
+
+                    Users user = new Users();
+                    user.setUserID(userID);
+                    user.setBio(userBio);
+                    user.setUsername(userName);
+                    user.setImageProfile(imageUrl);
+
+                    if (userID != null && !userID.equals(firebaseUser.getUid())) {
+                        list.add(user);
+                    }
+                }
+                adapter = new ContactAdapter(list, AddContact.this);
+                binding.contactsRecyclerView.setAdapter(adapter);
             }
         });
     }

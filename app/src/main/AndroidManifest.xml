@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- Permission to write contacts -->
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +20,12 @@
         android:theme="@style/Theme.Chatify"
         tools:ignore="ExtraText"
         tools:targetApi="31">
+        <activity
+            android:name=".view.view.Chat.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".display.ViewImageActivity"
+            android:exported="false" />
         <activity
             android:name=".view.auth.emailverification"
             android:exported="false" />
@@ -39,13 +45,13 @@
             android:name=".view.setting.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".NewGroup"
+            android:name=".view.contact.NewGroup"
             android:exported="false" />
         <activity
-            android:name=".NewContact"
+            android:name=".view.contact.NewContact"
             android:exported="false" />
         <activity
-            android:name=".AddContact"
+            android:name=".view.contact.AddContact"
             android:exported="false" />
         <activity
             android:name=".view.startup.SplachActivity"

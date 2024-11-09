@@ -69,7 +69,40 @@
                     android:maxLines="1"
                     tools:ignore="HardcodedText" />
             </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneNumberLayout3"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNumberEt3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="Type your bio here"
+                    android:importantForAccessibility="yes"
+                    android:inputType="textPersonName"
+                    android:maxLength="100"
+                    android:maxLines="2"
+                    tools:ignore="HardcodedText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:id="@+id/spinner"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"/>
         </LinearLayout>
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button2"
