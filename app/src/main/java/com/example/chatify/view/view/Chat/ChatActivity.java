@@ -25,8 +25,10 @@ import com.example.chatify.R;
 import com.example.chatify.adapter.ChatsAdapter;
 import com.example.chatify.databinding.ActivityChatBinding;
 import com.example.chatify.model.chat.Chats;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -146,10 +148,22 @@ public class ChatActivity extends AppCompatActivity {
                 "TEXT",
                 firebaseUser.getUid(),
                 receiverID);
-        reference.child("Chats").push().setValue(chats).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+        String SenderRoom = FirebaseAuth.getInstance().getUid()+receiverID;
+        String reciverRoom = receiverID + FirebaseAuth.getInstance().getUid();
+
+        reference.child("Chats").child(SenderRoom).child("msg").push().setValue(chats).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d("Send", "onSuccess:");
+                reference.child("Chats")
+                        .child(reciverRoom)
+                        .child("msg")
+                        .push().setValue(chats).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                            }
+                        });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -173,10 +187,10 @@ public class ChatActivity extends AppCompatActivity {
         try {
             DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
             binding.recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this
-                    , LinearLayoutManager.HORIZONTAL, false));
+                    , LinearLayoutManager.VERTICAL, false));
             adapter = new ChatsAdapter(list, ChatActivity.this);
             binding.recyclerView.setAdapter(adapter);
-            reference1.child("Chats").addValueEventListener(new ValueEventListener() {
+            reference1.child("Chats").child(FirebaseAuth.getInstance().getUid() + receiverID).child("msg").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     list.clear();
@@ -208,4 +222,6 @@ public class ChatActivity extends AppCompatActivity {
         }
 
     }
+
+
 }
