@@ -310,11 +310,11 @@ package com.example.chatify.view.Profile;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -336,8 +336,6 @@ import androidx.databinding.DataBindingUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.chatify.DatabaseHelper;
-import com.example.chatify.MediaRepository;
 import com.example.chatify.R;
 import com.example.chatify.common.Common;
 import com.example.chatify.databinding.ActivityProfileBinding;
@@ -404,7 +402,7 @@ public class Profile extends AppCompatActivity {
 
         binding.nameEdit.setOnClickListener(view -> showButtomSheetEditName());
 
-        binding.bioEdit.setOnClickListener(view -> showBioBottomSheet());
+        binding.bioEdit.setOnClickListener(view -> showBioBottomSheet() );
 
         binding.Change.setOnClickListener(view -> {
             // Invalidate the ImageView
@@ -590,37 +588,14 @@ public class Profile extends AppCompatActivity {
         if (requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
 
-            MediaRepository mediaRepo = new MediaRepository(this);
-            mediaRepo.open();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                binding.Change.setImageBitmap(bitmap);
 
-            String filePath = imageUri.toString();  // Store the URI
-            long id = mediaRepo.insertMedia("Example Image", "image", filePath);
-
-            mediaRepo.close();
-
-            // Optionally show the image in an ImageView
-            binding.Change.setImageURI(imageUri);
-
-        }
-    }
-
-    private void displayMedia(long mediaId) {
-        MediaRepository mediaRepo = new MediaRepository(this);
-        mediaRepo.open();
-
-        Cursor cursor = mediaRepo.getMediaById(mediaId);
-        if (cursor != null && cursor.moveToFirst()) {
-            @SuppressLint("Range") String filePath = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FILE_PATH));
-
-            // For images, you can directly use the file path (or URI)
-            if (filePath != null) {
-                Uri mediaUri = Uri.parse(filePath);  // Convert to URI
-                binding.Change.setImageURI(mediaUri);  // Display the image
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-
-        cursor.close();
-        mediaRepo.close();
     }
 
     private void updateName(String newName) {
@@ -631,8 +606,8 @@ public class Profile extends AppCompatActivity {
                 });
     }
 
-    private void updateBio(String newBio) {
-        firestore.collection("Users").document(firebaseUser.getUid()).update("bio", newBio)
+    private void updateBio(String newBio){
+        firestore.collection("Users").document(firebaseUser.getUid()).update("bio",newBio)
                 .addOnSuccessListener(unused -> {
                     Toast.makeText(getApplicationContext(), "Update Successful", Toast.LENGTH_SHORT).show();
                     getUserInfo();
