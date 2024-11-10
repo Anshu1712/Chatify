@@ -1,5 +1,6 @@
 package com.example.chatify.view.auth;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -65,13 +66,20 @@ public class SetUserInfoActivity extends AppCompatActivity {
     private void initBottomClick() {
         // Set click listener for the "Update" button.
         binding.button2.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 // Check if the username (input field) is empty.
                 if (TextUtils.isEmpty(binding.phoneNumberEt2.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Please input username", Toast.LENGTH_SHORT).show();  // Show a toast if username is empty.
                 } else {
-                    doUpdate();  // Call the method to update the user information if username is valid.
+                   doUpdate();  // Call the method to update the user information if username is valid.
+                }
+                if (TextUtils.isEmpty(binding.phoneNumberEt3.getText().toString())) {
+                    binding.phoneNumberEt3.setText("Hey there I'M using chatify");
+                    doUpdate();
+                } else {
+                    doUpdate();
                 }
             }
         });

@@ -3,6 +3,7 @@ package com.example.chatify.adapter;
 // Import necessary classes for handling UI and RecyclerView components
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.chatify.R;
 import com.example.chatify.model.ChatListModel;
+import com.example.chatify.view.view.Chat.ChatActivity;
 
 import java.util.List;
 
@@ -60,7 +62,22 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.Holder
         holder.tvDate.setText(chatlist.getDate());
 
         // Use Glide to load the profile image URL into the CircleImageView (profile image)
-        Glide.with(context).load(chatlist.getUrlProfile()).into(holder.profile);
+        if (chatlist.getUrlProfile().equals("")) {
+            holder.profile.setImageResource(R.drawable.user);
+        } else {
+            Glide.with(context).load(chatlist.getUrlProfile()).into(holder.profile);
+        }
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(context, ChatActivity.class)
+                        .putExtra("userID", chatlist.getUserID())
+                        .putExtra("username", chatlist.getUserName())
+                        .putExtra("imageProfile", chatlist.getUrlProfile()));
+            }
+        });
     }
 
     // Returns the total number of items in the list (the number of chat items)

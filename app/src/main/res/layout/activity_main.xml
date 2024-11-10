@@ -33,6 +33,8 @@
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:elevation="0dp"
+            app:elevation="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -49,6 +51,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab"
             style="@style/CustomTabLayoutStyle"
+            app:tabGravity="fill"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

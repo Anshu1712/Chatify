@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.chatify.R;
+import com.example.chatify.view.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -35,7 +36,7 @@ public class SplachActivity extends AppCompatActivity {
 
                 @Override
                 public void run() {
-                    startActivity(new Intent(SplachActivity.this, welcomeActivity.class));
+                    startActivity(new Intent(SplachActivity.this, MainActivity.class));
                     finish();
                 }
             }, 4000);

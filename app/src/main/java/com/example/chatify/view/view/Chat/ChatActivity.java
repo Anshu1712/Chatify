@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -20,7 +21,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.chatify.R;
 import com.example.chatify.adapter.ChatsAdapter;
 import com.example.chatify.databinding.ActivityChatBinding;
@@ -58,6 +58,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -75,7 +76,9 @@ public class ChatActivity extends AppCompatActivity {
 
         if (receiverID != null) {
             binding.userName.setText(userName);
-            Glide.with(this).load(userProfile).into(binding.imageProfile);
+            if (userProfile != null && userProfile.isEmpty()) {
+                binding.imageProfile.setImageResource(R.drawable.user);
+            }
 
         }
         binding.backbtn.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +131,12 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
+        binding.backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
@@ -149,7 +158,7 @@ public class ChatActivity extends AppCompatActivity {
                 firebaseUser.getUid(),
                 receiverID);
 
-        String SenderRoom = FirebaseAuth.getInstance().getUid()+receiverID;
+        String SenderRoom = FirebaseAuth.getInstance().getUid() + receiverID;
         String reciverRoom = receiverID + FirebaseAuth.getInstance().getUid();
 
         reference.child("Chats").child(SenderRoom).child("msg").push().setValue(chats).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -195,7 +204,7 @@ public class ChatActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     list.clear();
                     if (snapshot.exists()) {
-                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        for (DataSnapshot snap : snapshot.getChildren()) {
 
 
                             String dateTime = snap.child("dateTime").getValue(String.class);
