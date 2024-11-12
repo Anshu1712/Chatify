@@ -1,4 +1,4 @@
-package com.example.chatify.view.auth;
+package com.example.chatify.view.activities.auth;
 
 import android.os.Bundle;
 import android.view.View;

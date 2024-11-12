@@ -1,4 +1,4 @@
-package com.example.chatify.view.startup;
+package com.example.chatify.view.activities.startup;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.chatify.R;
 import com.example.chatify.model.ChatListModel;
-import com.example.chatify.view.view.Chat.ChatActivity;
+import com.example.chatify.view.activities.Chat.ChatActivity;
 
 import java.util.List;
 

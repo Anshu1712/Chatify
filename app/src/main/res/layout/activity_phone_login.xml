@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-        tools:context=".view.auth.phoneLoginActivity">
+        tools:context=".view.activities.auth.phoneLoginActivity">
 
         <LinearLayout
             android:id="@+id/linearLayout3"

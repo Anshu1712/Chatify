@@ -1,4 +1,4 @@
-package com.example.chatify.view.setting;
+package com.example.chatify.view.activities.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import androidx.databinding.DataBindingUtil;
 import com.example.chatify.R;
 import com.example.chatify.databinding.ActivitySettingsBinding;
 import com.example.chatify.view.MainActivity;
-import com.example.chatify.view.Profile.Profile;
+import com.example.chatify.view.activities.Profile.Profile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

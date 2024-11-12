@@ -305,7 +305,7 @@
 //    }
 //}
 
-package com.example.chatify.view.Profile;
+package com.example.chatify.view.activities.Profile;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -340,8 +340,8 @@ import com.example.chatify.R;
 import com.example.chatify.common.Common;
 import com.example.chatify.databinding.ActivityProfileBinding;
 import com.example.chatify.display.ViewImageActivity;
-import com.example.chatify.view.setting.SettingsActivity;
-import com.example.chatify.view.startup.SplachActivity;
+import com.example.chatify.view.activities.setting.SettingsActivity;
+import com.example.chatify.view.activities.startup.SplachActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

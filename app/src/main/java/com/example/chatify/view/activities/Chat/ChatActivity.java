@@ -1,4 +1,4 @@
-package com.example.chatify.view.view.Chat;
+package com.example.chatify.view.activities.Chat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -25,6 +25,7 @@ import com.example.chatify.R;
 import com.example.chatify.adapter.ChatsAdapter;
 import com.example.chatify.databinding.ActivityChatBinding;
 import com.example.chatify.model.chat.Chats;
+import com.example.chatify.view.activities.Profile.UserProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,6 +53,7 @@ public class ChatActivity extends AppCompatActivity {
     private String receiverID;
     private ChatsAdapter adapter;
     private List<Chats> list;
+    private String userProfile, userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +71,9 @@ public class ChatActivity extends AppCompatActivity {
         reference = FirebaseDatabase.getInstance().getReference();
 
         Intent intent = getIntent();
-        String userName = intent.getStringExtra("username");
+        userName = intent.getStringExtra("username");
         receiverID = intent.getStringExtra("userID");
-        String userProfile = intent.getStringExtra("imageProfile");
+        userProfile = intent.getStringExtra("imageProfile");
 
 
         if (receiverID != null) {
@@ -135,6 +137,17 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+        binding.imageProfile1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ChatActivity.this, UserProfileActivity.class)
+                        .putExtra("userID", receiverID)
+                        .putExtra("userProfile", userProfile)
+                        .putExtra("username", userName)
+                );
+
             }
         });
 

@@ -1,4 +1,4 @@
-package com.example.chatify.view.contact;
+package com.example.chatify.view.activities.contact;
 
 import android.Manifest;
 import android.content.Intent;

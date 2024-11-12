@@ -1,4 +1,4 @@
-package com.example.chatify.view.auth;  // Declares the package where this activity belongs (authentication part).
+package com.example.chatify.view.activities.auth;  // Declares the package where this activity belongs (authentication part).
 
 import android.app.ProgressDialog;
 import android.content.Intent;

@@ -50,4 +50,8 @@
     <string name="last_seen_today">last seen today...</string>
     <string name="type_a_message">Type a message</string>
     <string name="this_is_text_message">this is text message</string>
+    <string name="very_long_lorem_ipsum">Very long lorem</string>
+    <string name="mute_notification">Mute notification</string>
+    <string name="custom_notification">Custom Notification</string>
+    <string name="media_visibility">Media visibility</string>
 </resources>
