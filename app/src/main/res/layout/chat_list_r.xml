@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="2dp"
-    android:layout_marginBottom="2dp"
     android:layout_marginStart="10dp"
+    android:layout_marginTop="2dp"
     android:layout_marginEnd="10dp"
+    android:layout_marginBottom="2dp"
     android:gravity="end"
     android:orientation="horizontal"
     android:paddingTop="2dp"
@@ -13,23 +13,26 @@
 
     <!-- Optional Profile Image/Icon -->
 
-
     <TextView
         android:id="@+id/txtRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="5dp"
         android:background="@drawable/chat_right"
         android:elevation="2dp"
         android:ellipsize="end"
         android:importantForAccessibility="yes"
+        android:maxWidth="250dp"
+        android:maxHeight="30dp"
         android:maxLines="5"
         android:padding="12dp"
         android:text="@string/this_is_text_message"
         android:textColor="@color/black"
         android:textSize="16sp" />
+
+    <!-- Optional Avatar/Icon -->
 
     <ImageView
         android:id="@+id/avatar"

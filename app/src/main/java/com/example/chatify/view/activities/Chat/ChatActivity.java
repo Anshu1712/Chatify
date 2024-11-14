@@ -46,7 +46,6 @@ import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
-
     private ActivityChatBinding binding;
     private FirebaseUser firebaseUser;
     private DatabaseReference reference;
@@ -54,6 +53,7 @@ public class ChatActivity extends AppCompatActivity {
     private ChatsAdapter adapter;
     private List<Chats> list;
     private String userProfile, userName;
+    private boolean isActionShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,26 +75,20 @@ public class ChatActivity extends AppCompatActivity {
         receiverID = intent.getStringExtra("userID");
         userProfile = intent.getStringExtra("imageProfile");
 
-
         if (receiverID != null) {
             binding.userName.setText(userName);
             if (userProfile != null && userProfile.isEmpty()) {
                 binding.imageProfile.setImageResource(R.drawable.user);
             }
-
         }
-        binding.backbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
+        // Back button click listener
+        binding.backbtn.setOnClickListener(view -> finish());
+
+        // TextWatcher for the input field
         binding.etd.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -106,9 +100,7 @@ public class ChatActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
+            public void afterTextChanged(Editable editable) {}
         });
 
         initBtnClick();
@@ -121,44 +113,39 @@ public class ChatActivity extends AppCompatActivity {
         readChat();
     }
 
-
     private void initBtnClick() {
-        binding.sentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!TextUtils.isEmpty(binding.etd.getText().toString())) {
-                    sendTextMessage(binding.etd.getText().toString());
-
-                    binding.etd.setText("");
-                }
-            }
-        });
-        binding.backbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        binding.imageProfile1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ChatActivity.this, UserProfileActivity.class)
-                        .putExtra("userID", receiverID)
-                        .putExtra("userProfile", userProfile)
-                        .putExtra("username", userName)
-                );
-
+        binding.sentBtn.setOnClickListener(view -> {
+            if (!TextUtils.isEmpty(binding.etd.getText().toString())) {
+                sendTextMessage(binding.etd.getText().toString());
+                binding.etd.setText("");
             }
         });
 
+        // Open user profile when image is clicked
+        binding.imageProfile1.setOnClickListener(view -> {
+            startActivity(new Intent(ChatActivity.this, UserProfileActivity.class)
+                    .putExtra("userID", receiverID)
+                    .putExtra("userProfile", userProfile)
+                    .putExtra("username", userName)
+            );
+        });
+
+        // Handle the attachment button click
+        binding.attachment.setOnClickListener(view -> {
+            if (isActionShown) {
+                binding.layoutAction.setVisibility(View.GONE);  // Hide the layout
+                isActionShown = false;
+            } else {
+                binding.layoutAction.setVisibility(View.VISIBLE);  // Show the layout
+                isActionShown = true;
+            }
+        });
     }
 
     private void sendTextMessage(String text) {
-
         Date date = Calendar.getInstance().getTime();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         String today = format.format(date);
-
 
         Calendar currentDateTime = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");
@@ -174,27 +161,11 @@ public class ChatActivity extends AppCompatActivity {
         String SenderRoom = FirebaseAuth.getInstance().getUid() + receiverID;
         String reciverRoom = receiverID + FirebaseAuth.getInstance().getUid();
 
-        reference.child("Chats").child(SenderRoom).child("msg").push().setValue(chats).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                reference.child("Chats")
-                        .child(reciverRoom)
-                        .child("msg")
-                        .push().setValue(chats).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+        reference.child("Chats").child(SenderRoom).child("msg").push().setValue(chats).addOnSuccessListener(aVoid ->
+                reference.child("Chats").child(reciverRoom).child("msg").push().setValue(chats)
+        ).addOnFailureListener(e -> Log.d("Send", "onFailure:" + e.getMessage()));
 
-                            }
-                        });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("Send", "onFailure:" + e.getMessage());
-            }
-        });
-
-
+        // Update ChatList
         DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("ChatList")
                 .child(firebaseUser.getUid()).child(receiverID);
         chatRef1.child("chatid").setValue(receiverID);
@@ -202,7 +173,6 @@ public class ChatActivity extends AppCompatActivity {
         DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("ChatList")
                 .child(receiverID).child(firebaseUser.getUid());
         chatRef2.child("chatid").setValue(firebaseUser.getUid());
-
     }
 
     private void readChat() {
@@ -212,38 +182,30 @@ public class ChatActivity extends AppCompatActivity {
                     , LinearLayoutManager.VERTICAL, false));
             adapter = new ChatsAdapter(list, ChatActivity.this);
             binding.recyclerView.setAdapter(adapter);
-            reference1.child("Chats").child(FirebaseAuth.getInstance().getUid() + receiverID).child("msg").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    list.clear();
-                    if (snapshot.exists()) {
-                        for (DataSnapshot snap : snapshot.getChildren()) {
-
-
-                            String dateTime = snap.child("dateTime").getValue(String.class);
-                            String receiver = snap.child("receiver").getValue(String.class);
-                            String sender = snap.child("sender").getValue(String.class);
-                            String textMessage = snap.child("textMessage").getValue(String.class);
-                            String type = snapshot.child("type").getValue(String.class);
-                            Chats chats = new Chats(dateTime, textMessage, type, sender, receiver);
-                            list.add(chats);
+            reference1.child("Chats").child(FirebaseAuth.getInstance().getUid() + receiverID).child("msg")
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            list.clear();
+                            if (snapshot.exists()) {
+                                for (DataSnapshot snap : snapshot.getChildren()) {
+                                    String dateTime = snap.child("dateTime").getValue(String.class);
+                                    String receiver = snap.child("receiver").getValue(String.class);
+                                    String sender = snap.child("sender").getValue(String.class);
+                                    String textMessage = snap.child("textMessage").getValue(String.class);
+                                    String type = snapshot.child("type").getValue(String.class);
+                                    Chats chats = new Chats(dateTime, textMessage, type, sender, receiver);
+                                    list.add(chats);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
                         }
-                    }
-                    Toast.makeText(ChatActivity.this, String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
-                    adapter.notifyDataSetChanged();
-                }
 
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {}
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
-
 }

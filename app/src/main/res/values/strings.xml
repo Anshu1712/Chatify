@@ -54,4 +54,7 @@
     <string name="mute_notification">Mute notification</string>
     <string name="custom_notification">Custom Notification</string>
     <string name="media_visibility">Media visibility</string>
+    <string name="documents">document</string>
+    <string name="audio">Audio</string>
+    <string name="location">Location</string>
 </resources>
