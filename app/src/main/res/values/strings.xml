@@ -57,4 +57,5 @@
     <string name="documents">document</string>
     <string name="audio">Audio</string>
     <string name="location">Location</string>
+    <string name="send_image">Send Image</string>
 </resources>

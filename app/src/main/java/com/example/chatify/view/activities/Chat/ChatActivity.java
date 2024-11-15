@@ -2,14 +2,16 @@ package com.example.chatify.view.activities.Chat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -21,15 +23,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.adapter.ChatsAdapter;
 import com.example.chatify.databinding.ActivityChatBinding;
 import com.example.chatify.model.chat.Chats;
 import com.example.chatify.view.activities.Profile.UserProfileActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.example.chatify.view.activities.dialog.DialogReviewSendImage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +44,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+
 public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
@@ -54,6 +57,9 @@ public class ChatActivity extends AppCompatActivity {
     private List<Chats> list;
     private String userProfile, userName;
     private boolean isActionShown = false;
+
+    private int IMAGE_GALLERY_REQUEST = 111;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +91,19 @@ public class ChatActivity extends AppCompatActivity {
         // Back button click listener
         binding.backbtn.setOnClickListener(view -> finish());
 
+        binding.gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGallery();
+            }
+        });
+
+
         // TextWatcher for the input field
         binding.etd.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -100,7 +115,8 @@ public class ChatActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         initBtnClick();
@@ -112,6 +128,7 @@ public class ChatActivity extends AppCompatActivity {
 
         readChat();
     }
+
 
     private void initBtnClick() {
         binding.sentBtn.setOnClickListener(view -> {
@@ -202,10 +219,59 @@ public class ChatActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onCancelled(@NonNull DatabaseError error) {}
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
                     });
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setImage() {
+
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select image"), IMAGE_GALLERY_REQUEST);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+
+
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                reviewImage(bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//
+//            if (imageUri != null) {
+//                String img_name = FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo";
+//                String filePath = CloudinaryHelper.INSTANCE.getRealPathFromURI(imageUri, this).toString();
+//                CloudinaryHelper.INSTANCE.uploadImage(img_name, filePath, new Function1<String, Unit>() {
+//                    @Override
+//                    public Unit invoke(String s) {
+//                        System.out.println(s);
+//                        return null;
+//                    }
+//                });
+//
+//            }
+        }
+    }
+    private void reviewImage(Bitmap bitmap){
+        new DialogReviewSendImage(ChatActivity.this,bitmap).show(new DialogReviewSendImage.OnCallBack() {
+            @Override
+            public void onButtonSendClick() {
+
+            }
+        });
     }
 }

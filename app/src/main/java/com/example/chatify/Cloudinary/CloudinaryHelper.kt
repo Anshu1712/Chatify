@@ -1,107 +1,141 @@
-package com.example.chatify.Cloudinary;
+package com.example.chatify.Clouddinary.CloudinaryHelper
+import android.content.ContentResolver
+import android.content.ContentUris
+import android.content.Context
+import android.database.Cursor
+import android.net.Uri
+import android.os.Build
+import android.provider.DocumentsContract
+import android.provider.MediaStore
+import android.widget.ImageView
+import com.cloudinary.android.MediaManager
+import com.cloudinary.android.callback.ErrorInfo
+import com.cloudinary.android.callback.UploadCallback
+import com.example.chatify.R
+import com.google.protobuf.Internal.BooleanList
+import com.squareup.picasso.Picasso
 
-import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
+object CloudinaryHelper{
+    val config : MutableMap<String,Any> = mutableMapOf()
+    lateinit var publicId : String
+    var started : Boolean = false
 
-import com.cloudinary.android.MediaManager;
-import com.cloudinary.android.callback.ErrorInfo;
-import com.cloudinary.android.callback.UploadCallback;
+    fun initializeConfig(context : Context){
+        config["cloud_name"] = "dzvjxl8ms"
+        config["api_key"] = "712391915763792"
+        config["api_secret"] = "algD8qAf1Y5HlKtbRBCJ6_QjwKw"
+        MediaManager.init(context, config)
+        started = true
+    }
 
-import java.util.HashMap;
-import java.util.Map;
+    fun uploadImage(name : String,filePath: String, onSuccess: (String) -> Unit) {
+        MediaManager.get().upload(filePath)
+            .option("resource_type", "image")
+            .option("public_id",name)
+            .callback(object : UploadCallback {
+                override fun onStart(requestId: String?) {
+                    println("Upload started")
+                }
 
-public class CloudinaryHelper {
+                override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {
+                    val progress = (bytes * 100 / totalBytes).toInt()
+                    println("Upload progress: $progress%")
+                }
 
-    private static boolean isInit = false;
+                override fun onSuccess(requestId: String?, resultData: Map<*, *>?) {
+                    val imageUrl = resultData?.get("url").toString()
+                    publicId = resultData?.get("public_id").toString()
 
-    // Initializes the Cloudinary library (make sure to load credentials securely)
-    public static void init(Context context) {
-        if (!isInit) {
-            Map<String, String> config = new HashMap<>();
-            // Ideally, load from a more secure location like environment variables or encrypted storage
-            config.put("cloud_name", "dbydr8c5p");
-            config.put("api_key", "576661243913843");
-            config.put("api_secret", "I1j72YDknkPgw2gcqdIE2JU2TSY");
+                    println("Image uploaded successfully. URL: $imageUrl")
+                    onSuccess(imageUrl)
+                }
 
-            // Initialize the Cloudinary SDK
-            MediaManager.init(context, config);
-            isInit = true;
+                override fun onError(requestId: String?, error: ErrorInfo?) {
+                    println("Error uploading image: ${error?.description}")
+                }
+
+                override fun onReschedule(requestId: String?, error: ErrorInfo?) {
+                }
+            })
+            .dispatch()
+    }
+    fun fetchThatImage(name : String ,img : ImageView){
+        val imageUrl = MediaManager.get().url().generate(name)
+        Picasso.get()
+            .load(imageUrl)
+            .error(R.drawable.user)
+            .into(img)
+    }
+
+    fun getRealPathFromURI(uri: Uri, context: Context): String? {
+        // Check if it's a document URI
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context, uri)) {
+            // Handle different document URIs
+            when {
+                isExternalStorageDocument(uri) -> {
+                    val docId = DocumentsContract.getDocumentId(uri)
+                    val split = docId.split(":")
+                    val type = split[0]
+                    if ("primary" == type) {
+                        return "${android.os.Environment.getExternalStorageDirectory()}/${split[1]}"
+                    }
+                }
+                isDownloadsDocument(uri) -> {
+                    val id = DocumentsContract.getDocumentId(uri)
+                    val contentUri = Uri.parse("content://downloads/public_downloads")
+                    val uriContent = ContentUris.withAppendedId(contentUri, java.lang.Long.valueOf(id))
+                    return getDataColumn(context, uriContent, null, null)
+                }
+                isMediaDocument(uri) -> {
+                    val docId = DocumentsContract.getDocumentId(uri)
+                    val split = docId.split(":")
+                    val type = split[0]
+                    val contentUri = when (type) {
+                        "image" -> MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                        "video" -> MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                        "audio" -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                        else -> null
+                    }
+                    val selection = "_id=?"
+                    val selectionArgs = arrayOf(split[1])
+                    return contentUri?.let { getDataColumn(context, it, selection, selectionArgs) }
+                }
+            }
+        } else if ("content".equals(uri.scheme, ignoreCase = true)) {
+            return getDataColumn(context, uri, null, null)
+        } else if ("file".equals(uri.scheme, ignoreCase = true)) {
+            return uri.path
         }
+        return null
     }
 
-    // Upload a file to Cloudinary
-    public static void uploadFile(
-            String filePath,
-            String fileType,
-            Runnable onStart,
-            ProgressCallback onProgress,
-            SuccessCallback onSuccess,
-            ErrorCallback onError
-    ) {
-        // Make sure that MediaManager is initialized before calling this
-        if (!isInit) {
-            throw new IllegalStateException("Cloudinary is not initialized. Call init() first.");
+    private fun getDataColumn(context: Context, uri: Uri, selection: String?, selectionArgs: Array<String>?): String? {
+        var cursor: Cursor? = null
+        val column = "_data"
+        val projection = arrayOf(column)
+
+        try {
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor != null && cursor.moveToFirst()) {
+                val columnIndex = cursor.getColumnIndexOrThrow(column)
+                return cursor.getString(columnIndex)
+            }
+        } finally {
+            cursor?.close()
         }
-
-        MediaManager.get()
-                .upload(filePath)
-                .option("resource_type", fileType)
-                .callback(new UploadCallback() {
-                    @Override
-                    public void onStart(String requestId) {
-                        // Run onStart callback on the main thread to ensure UI interaction
-                        runOnUiThread(onStart);
-                    }
-
-                    @Override
-                    public void onProgress(String requestId, long bytes, long totalBytes) {
-                        // Calculate progress percentage
-                        int progress = (int) ((bytes * 100) / totalBytes);
-                        // Run onProgress callback on the main thread
-                        runOnUiThread(() -> onProgress.onProgress(progress));
-                    }
-
-                    @Override
-                    public void onSuccess(String requestId, Map resultData) {
-                        // Retrieve the secure URL from the result data
-                        String url = (String) resultData.get("secure_url");
-                        // Run onSuccess callback on the main thread
-                        runOnUiThread(() -> onSuccess.onSuccess(url));
-                    }
-
-                    @Override
-                    public void onError(String requestId, ErrorInfo error) {
-                        // Run onError callback on the main thread
-                        runOnUiThread(() -> onError.onError(error.getDescription()));
-                    }
-
-                    @Override
-                    public void onReschedule(String requestId, ErrorInfo error) {
-                        // Optional: Handle reschedule scenarios if needed
-                    }
-                })
-                .dispatch();
+        return null
     }
 
-    // Utility method to run actions on the main thread
-    public static void runOnUiThread(Runnable action) {
-        // Ensure that callbacks run on the main thread (important for UI updates)
-        new Handler(Looper.getMainLooper()).post(action);
+    private fun isExternalStorageDocument(uri: Uri): Boolean {
+        return "com.android.externalstorage.documents" == uri.authority
     }
 
-    // Interface for reporting progress
-    public interface ProgressCallback {
-        void onProgress(int progress);
+    private fun isDownloadsDocument(uri: Uri): Boolean {
+        return "com.android.providers.downloads.documents" == uri.authority
     }
 
-    // Interface for successful upload result
-    public interface SuccessCallback {
-        void onSuccess(String url);
+    private fun isMediaDocument(uri: Uri): Boolean {
+        return "com.android.providers.media.documents" == uri.authority
     }
 
-    // Interface for handling errors
-    public interface ErrorCallback {
-        void onError(String error);
-    }
 }

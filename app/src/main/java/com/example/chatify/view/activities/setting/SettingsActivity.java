@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.databinding.ActivitySettingsBinding;
 import com.example.chatify.view.MainActivity;
@@ -54,6 +55,9 @@ public class SettingsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        if(!CloudinaryHelper.INSTANCE.getStarted()) CloudinaryHelper.INSTANCE.initializeConfig(this);
+        CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid()+"@userinfo",binding.imageProfile);
 
         // Initialize Firebase Firestore and Authentication instances
         firestore = FirebaseFirestore.getInstance();
@@ -143,4 +147,5 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }

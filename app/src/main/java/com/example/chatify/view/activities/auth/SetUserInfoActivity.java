@@ -3,7 +3,10 @@ package com.example.chatify.view.activities.auth;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.databinding.ActivitySetUserInfoBinding;
 import com.example.chatify.model.user.Users;
@@ -25,12 +29,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+
 public class SetUserInfoActivity extends AppCompatActivity {
 
     private Spinner spinnerBio;
 
     private ActivitySetUserInfoBinding binding;  // Binding object to access views directly.
-    private ProgressDialog progressDialog;  // ProgressDialog to show loading state while updating user info.
+    private ProgressDialog progressDialog;
+    private int IMAGE_GALLERY_REQUEST = 111;
+    private Uri imageUri;// ProgressDialog to show loading state while updating user info.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,11 @@ public class SetUserInfoActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);  // Initialize ProgressDialog to show loading indicator during update.
         initBottomClick();  // Initialize button click handlers.
+
+
+        // laude iise code se profile photo ayega
+        CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo", binding.Change1);
+
 
         // Find the Spinner in the layout
         spinnerBio = findViewById(R.id.spinner);
@@ -73,7 +87,7 @@ public class SetUserInfoActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(binding.phoneNumberEt2.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Please input username", Toast.LENGTH_SHORT).show();  // Show a toast if username is empty.
                 } else {
-                   doUpdate();  // Call the method to update the user information if username is valid.
+                    doUpdate();  // Call the method to update the user information if username is valid.
                 }
                 if (TextUtils.isEmpty(binding.phoneNumberEt3.getText().toString())) {
                     binding.phoneNumberEt3.setText("Hey there I'M using chatify");
@@ -88,9 +102,9 @@ public class SetUserInfoActivity extends AppCompatActivity {
         binding.Change1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "This Function is not ready yet", Toast.LENGTH_SHORT).show();  // Notify user that this feature is not ready.
+//                Toast.makeText(getApplicationContext(), "This Function is not ready yet", Toast.LENGTH_SHORT).show();  // Notify user that this feature is not ready.
                 // Uncomment below line if functionality for picking an image is implemented.
-                // pickImage();  // Open image picker dialog (currently disabled).
+                pickImage();  // Open image picker dialog (currently disabled).
             }
         });
     }
@@ -139,4 +153,39 @@ public class SetUserInfoActivity extends AppCompatActivity {
             progressDialog.dismiss();  // Dismiss the progress dialog if user is null.
         }
     }
+
+    private void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                binding.Change1.setImageBitmap(bitmap);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (imageUri != null) {
+                String img_name = FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo";
+                String filePath = CloudinaryHelper.INSTANCE.getRealPathFromURI(imageUri, this).toString();
+                CloudinaryHelper.INSTANCE.uploadImage(img_name, filePath, new Function1<String, Unit>() {
+                    @Override
+                    public Unit invoke(String s) {
+                        System.out.println(s);
+                        return null;
+                    }
+                });
+
+            }
+        }
+    }
 }
+
+

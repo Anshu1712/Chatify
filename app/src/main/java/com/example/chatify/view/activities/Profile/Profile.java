@@ -336,10 +336,11 @@ import androidx.databinding.DataBindingUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.common.Common;
 import com.example.chatify.databinding.ActivityProfileBinding;
-import com.example.chatify.display.ViewImageActivity;
+import com.example.chatify.view.activities.display.ViewImageActivity;
 import com.example.chatify.view.activities.setting.SettingsActivity;
 import com.example.chatify.view.activities.startup.SplachActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -348,6 +349,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class Profile extends AppCompatActivity {
 
@@ -361,6 +365,8 @@ public class Profile extends AppCompatActivity {
     private int IMAGE_GALLERY_REQUEST = 111;
     private Uri imageUri;
 
+    private String purpose;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -370,6 +376,10 @@ public class Profile extends AppCompatActivity {
 
         // Call a method to set up edge-to-edge UI, adjusting for system bars (status bar, navigation bar)
         setupEdgeToEdgeDisplay();
+
+
+        if (!CloudinaryHelper.INSTANCE.getStarted())
+            CloudinaryHelper.INSTANCE.initializeConfig(this);
 
         bottomSheetDialog = new BottomSheetDialog(this);
 
@@ -381,6 +391,9 @@ public class Profile extends AppCompatActivity {
 
         // Set the toolbar as the action bar (top navigation bar)
         setSupportActionBar(toolbar);
+
+        // iise code se profile photo ayega
+        CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo", binding.Change);
 
         // Set a click listener on the back button to handle back navigation
         backButton1.setOnClickListener(v -> navigateBackToMainActivity());
@@ -402,7 +415,7 @@ public class Profile extends AppCompatActivity {
 
         binding.nameEdit.setOnClickListener(view -> showButtomSheetEditName());
 
-        binding.bioEdit.setOnClickListener(view -> showBioBottomSheet() );
+        binding.bioEdit.setOnClickListener(view -> showBioBottomSheet());
 
         binding.Change.setOnClickListener(view -> {
             // Invalidate the ImageView
@@ -441,6 +454,12 @@ public class Profile extends AppCompatActivity {
         }
         View view = getLayoutInflater().inflate(R.layout.botton_sheet, null);
         bottomSheetDialog.setContentView(view);
+        view.findViewById(R.id.gallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGallery();
+            }
+        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Objects.requireNonNull(bottomSheetDialog.getWindow()).addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -595,6 +614,19 @@ public class Profile extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            if (imageUri != null) {
+                String img_name = FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo";
+                String filePath = CloudinaryHelper.INSTANCE.getRealPathFromURI(imageUri, this).toString();
+                CloudinaryHelper.INSTANCE.uploadImage(img_name, filePath, new Function1<String, Unit>() {
+                    @Override
+                    public Unit invoke(String s) {
+                        System.out.println(s);
+                        return null;
+                    }
+                });
+
+            }
         }
     }
 
@@ -606,8 +638,8 @@ public class Profile extends AppCompatActivity {
                 });
     }
 
-    private void updateBio(String newBio){
-        firestore.collection("Users").document(firebaseUser.getUid()).update("bio",newBio)
+    private void updateBio(String newBio) {
+        firestore.collection("Users").document(firebaseUser.getUid()).update("bio", newBio)
                 .addOnSuccessListener(unused -> {
                     Toast.makeText(getApplicationContext(), "Update Successful", Toast.LENGTH_SHORT).show();
                     getUserInfo();

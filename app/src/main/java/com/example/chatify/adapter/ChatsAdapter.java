@@ -1,12 +1,10 @@
 package com.example.chatify.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,18 +16,19 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-public class ChatsAdapter extends RecyclerView.Adapter{
+public class ChatsAdapter extends RecyclerView.Adapter {
 
     List<Chats> list;
     Context context;
     static final int MSG_TYPE_LEFT = 0;
     static final int MSG_TYPE_RIGHT = 1;
-     FirebaseUser firebaseUser;
+    FirebaseUser firebaseUser;
 
     public ChatsAdapter(List<Chats> list, Context context) {
         this.list = list;
         this.context = context;
     }
+
 
     @NonNull
     @Override
@@ -59,25 +58,30 @@ public class ChatsAdapter extends RecyclerView.Adapter{
     public int getItemCount() {
         return list.size();
     }
-    public int getItemViewType(int position){
+
+    public int getItemViewType(int position) {
         Chats chats = list.get(position);
-        if(chats.sender.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+        if (chats.sender.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
             return MSG_TYPE_RIGHT;
         }
         return MSG_TYPE_LEFT;
 
     }
 }
+
 class ViewHolder1 extends RecyclerView.ViewHolder {
     public TextView textMessage;
+
     public ViewHolder1(@NonNull View itemView) {
         super(itemView);
 
         textMessage = itemView.findViewById(R.id.txtLift);
     }
 }
+
 class ViewHolder2 extends RecyclerView.ViewHolder {
     public TextView textMessage;
+
     public ViewHolder2(@NonNull View itemView) {
         super(itemView);
         textMessage = itemView.findViewById(R.id.txtRight);

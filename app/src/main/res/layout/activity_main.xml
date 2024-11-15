@@ -40,11 +40,10 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
-                android:layout_width="410dp"
+                android:layout_width="match_parent"
                 android:layout_height="65dp"
                 app:title="Chatify"
                 app:titleTextAppearance="@style/ToolbarTitleStyle" />
-
 
         </com.google.android.material.appbar.AppBarLayout>
 
