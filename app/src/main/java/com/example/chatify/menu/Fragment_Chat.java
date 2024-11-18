@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.L;
 import com.example.chatify.R;
 import com.example.chatify.adapter.ChatListAdapter;
 import com.example.chatify.databinding.FragmentChatBinding;
@@ -72,12 +71,11 @@ public class Fragment_Chat extends Fragment {
 
         // Set the layout manager for the RecyclerView. The LinearLayoutManager arranges the items in a vertical list.
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ChatListAdapter(list,getContext());
+        adapter = new ChatListAdapter(list, getContext());
         binding.recyclerView.setAdapter(adapter);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
         firestore = FirebaseFirestore.getInstance();
-
 
 
         if (firebaseUser != null) {
@@ -103,7 +101,7 @@ public class Fragment_Chat extends Fragment {
 
                             allUserID.add(userID);
                         }
-                       getUserInfo();
+                        getUserInfo();
                     }
 
                     @Override
@@ -121,7 +119,7 @@ public class Fragment_Chat extends Fragment {
                     firestore.collection("Users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            Log.d(TAG ,"onSuccess: add " + documentSnapshot.getString("username"));
+                            Log.d(TAG, "onSuccess: add " + documentSnapshot.getString("username"));
                             try {
                                 ChatListModel chat = new ChatListModel(
                                         documentSnapshot.getString("userID"),
@@ -129,16 +127,18 @@ public class Fragment_Chat extends Fragment {
                                         "This is description..",
                                         "",
                                         documentSnapshot.getString("imageProfile")
+                                        , documentSnapshot.getString("userPhone")
+                                        ,documentSnapshot.getString("bio")
                                 );
                                 list.add(chat);
-                            }catch (Exception e){
-                                Log.d(TAG,"onSuccess :" +e.getMessage());
+                            } catch (Exception e) {
+                                Log.d(TAG, "onSuccess :" + e.getMessage());
                             }
-                            if (adapter!= null){
+                            if (adapter != null) {
                                 adapter.notifyItemInserted(0);
                                 adapter.notifyDataSetChanged();
 
-                                Log.d(TAG, "onSuccess: adapter" +adapter.getItemCount());
+                                Log.d(TAG, "onSuccess: adapter" + adapter.getItemCount());
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {

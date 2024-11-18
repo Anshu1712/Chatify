@@ -74,7 +74,6 @@ class ViewHolder1 extends RecyclerView.ViewHolder {
 
     public ViewHolder1(@NonNull View itemView) {
         super(itemView);
-
         textMessage = itemView.findViewById(R.id.txtLift);
     }
 }

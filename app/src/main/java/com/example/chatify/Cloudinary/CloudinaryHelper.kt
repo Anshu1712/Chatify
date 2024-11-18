@@ -20,6 +20,7 @@ object CloudinaryHelper{
     lateinit var publicId : String
     var started : Boolean = false
 
+
     fun initializeConfig(context : Context){
         config["cloud_name"] = "dzvjxl8ms"
         config["api_key"] = "712391915763792"

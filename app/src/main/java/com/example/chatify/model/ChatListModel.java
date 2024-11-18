@@ -8,19 +8,24 @@ public class ChatListModel {  // Declares the class ChatListModel. This class re
     private String description;   // Stores the description or last message in the chat.
     private String date;          // Stores the date and time when the last message was sent/received.
     private String urlProfile;    // Stores the URL to the user's profile image.
+    private String userPhone;// Stores the user's phone number.
+    private String UserBio;
 
     // Default constructor - an empty constructor required by certain frameworks like Firebase or when no parameters are passed during object creation.
     public ChatListModel() {
     }
 
     // Parameterized constructor - Allows creating an instance of ChatListModel by providing values for all fields.
-    public ChatListModel(String userID, String userName, String description, String date, String urlProfile) {
+    public ChatListModel(String userID, String userName, String description, String date, String urlProfile, String userPhone, String bio) {
         this.userID = userID;          // Initialize the userID with the provided userID.
         this.userName = userName;      // Initialize the userName with the provided userName.
         this.description = description; // Initialize the description with the provided description.
         this.date = date;              // Initialize the date with the provided date.
         this.urlProfile = urlProfile;  // Initialize the urlProfile with the provided URL of the profile image.
+        this.userPhone = userPhone;    // Initialize the userPhone with the provided phone number.
+        this.UserBio = bio;
     }
+
 
     // Getter method for userID - Retrieves the userID value.
     public String getUserID() {
@@ -70,5 +75,23 @@ public class ChatListModel {  // Declares the class ChatListModel. This class re
     // Setter method for urlProfile - Allows setting the URL to the profile image.
     public void setUrlProfile(String urlProfile) {
         this.urlProfile = urlProfile;  // Sets the urlProfile field to the provided value.
+    }
+
+    // Getter method for userPhone - Retrieves the phone number of the user.
+    public String getUserPhone() {
+        return userPhone;  // Returns the phone number of the user.
+    }
+
+    // Setter method for userPhone - Allows setting the userPhone value.
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;  // Sets the userPhone field to the provided value.
+    }
+
+    public String getUserBio() {
+        return UserBio;
+    }
+
+    public void setUserBio(String userBio) {
+        UserBio = userBio;
     }
 }

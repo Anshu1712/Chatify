@@ -12,8 +12,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -23,7 +23,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.adapter.ChatsAdapter;
 import com.example.chatify.databinding.ActivityChatBinding;
@@ -44,9 +43,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-
 public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
@@ -55,7 +51,7 @@ public class ChatActivity extends AppCompatActivity {
     private String receiverID;
     private ChatsAdapter adapter;
     private List<Chats> list;
-    private String userProfile, userName;
+    private String userProfile, userName, userPhone, UserBio;
     private boolean isActionShown = false;
 
     private int IMAGE_GALLERY_REQUEST = 111;
@@ -64,7 +60,6 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -80,6 +75,9 @@ public class ChatActivity extends AppCompatActivity {
         userName = intent.getStringExtra("username");
         receiverID = intent.getStringExtra("userID");
         userProfile = intent.getStringExtra("imageProfile");
+        userPhone = intent.getStringExtra("userPhone");
+        UserBio = intent.getStringExtra("bio");
+
 
         if (receiverID != null) {
             binding.userName.setText(userName);
@@ -95,6 +93,31 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openGallery();
+            }
+        });
+
+
+        binding.video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChatActivity.this, "Video call", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChatActivity.this, "This feature is not available", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.audio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChatActivity.this, "Audio call", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChatActivity.this, "This feature is not available", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChatActivity.this, "More function", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChatActivity.this, "This feature is not available", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -144,6 +167,7 @@ public class ChatActivity extends AppCompatActivity {
                     .putExtra("userID", receiverID)
                     .putExtra("userProfile", userProfile)
                     .putExtra("username", userName)
+                    .putExtra("userPhone", userPhone)
             );
         });
 
@@ -244,7 +268,6 @@ public class ChatActivity extends AppCompatActivity {
             imageUri = data.getData();
 
 
-
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                 reviewImage(bitmap);
@@ -266,12 +289,21 @@ public class ChatActivity extends AppCompatActivity {
 //            }
         }
     }
-    private void reviewImage(Bitmap bitmap){
-        new DialogReviewSendImage(ChatActivity.this,bitmap).show(new DialogReviewSendImage.OnCallBack() {
+
+    private void reviewImage(Bitmap bitmap) {
+        new DialogReviewSendImage(ChatActivity.this, bitmap).show(new DialogReviewSendImage.OnCallBack() {
             @Override
             public void onButtonSendClick() {
 
             }
         });
+    }
+
+    public String getUserBio() {
+        return UserBio;
+    }
+
+    public void setUserBio(String userBio) {
+        UserBio = userBio;
     }
 }

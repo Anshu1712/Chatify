@@ -36,6 +36,7 @@ public class SetUserInfoActivity extends AppCompatActivity {
 
     private Spinner spinnerBio;
 
+
     private ActivitySetUserInfoBinding binding;  // Binding object to access views directly.
     private ProgressDialog progressDialog;
     private int IMAGE_GALLERY_REQUEST = 111;
@@ -52,7 +53,7 @@ public class SetUserInfoActivity extends AppCompatActivity {
         initBottomClick();  // Initialize button click handlers.
 
 
-        // laude iise code se profile photo ayega
+        //  iise code se profile photo ayega
         CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo", binding.Change1);
 
 

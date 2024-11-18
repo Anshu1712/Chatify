@@ -13,9 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.model.ChatListModel;
 import com.example.chatify.view.activities.Chat.ChatActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -61,12 +63,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.Holder
         // Set the date of the chat to the tvDate TextView
         holder.tvDate.setText(chatlist.getDate());
 
-        // Use Glide to load the profile image URL into the CircleImageView (profile image)
-        if (chatlist.getUrlProfile().equals("")) {
-            holder.profile.setImageResource(R.drawable.user);
+        if (chatlist.getUrlProfile() != null && !chatlist.getUrlProfile().isEmpty()) {
+            CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo", holder.profile);
         } else {
-            Glide.with(context).load(chatlist.getUrlProfile()).into(holder.profile);
+            // Set a default image if there's no profile image
+            holder.profile.setImageResource(R.drawable.user);
         }
+        // Use Glide to load the profile image URL into the CircleImageView (profile image)
+//        if (chatlist.getUrlProfile().equals("")) {
+//            holder.profile.setImageResource(R.drawable.user);
+//        } else {
+//            Glide.with(context).load(chatlist.getUrlProfile()).into(holder.profile);
+//        }
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +83,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.Holder
                 context.startActivity(new Intent(context, ChatActivity.class)
                         .putExtra("userID", chatlist.getUserID())
                         .putExtra("username", chatlist.getUserName())
-                        .putExtra("imageProfile", chatlist.getUrlProfile()));
+                        .putExtra("imageProfile", chatlist.getUrlProfile())
+                        .putExtra("userPhone", chatlist.getUserPhone())
+                        .putExtra("bio", chatlist.getUserBio()));
+
             }
         });
     }
@@ -103,6 +114,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.Holder
             tvDescription = itemView.findViewById(R.id.tv_message);  // Message/Description TextView
             tvName = itemView.findViewById(R.id.tv_name);  // Name TextView
             profile = itemView.findViewById(R.id.image_profile);  // Profile image CircleImageView
+
         }
     }
 }

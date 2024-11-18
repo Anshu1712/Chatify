@@ -100,7 +100,6 @@ public class AddContact extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), NewContact.class);
             startActivity(intent);
         });
-
         // Set up a click listener for the back button
         imageView.setOnClickListener(v -> navigateBackToMainActivity());
     }
