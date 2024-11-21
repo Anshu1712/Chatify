@@ -1,5 +1,4 @@
 package com.example.chatify.Clouddinary.CloudinaryHelper
-import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
@@ -7,18 +6,25 @@ import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.ImageView
+import com.cloudinary.Cloudinary
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.example.chatify.R
-import com.google.protobuf.Internal.BooleanList
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object CloudinaryHelper{
     val config : MutableMap<String,Any> = mutableMapOf()
     lateinit var publicId : String
     var started : Boolean = false
+    val CLOUDINARY_URL = "cloudinary://712391915763792:algD8qAf1Y5HlKtbRBCJ6_QjwKw@dzvjxl8ms"
+    val cloudinary = Cloudinary(CLOUDINARY_URL)
 
 
     fun initializeConfig(context : Context){
@@ -29,7 +35,12 @@ object CloudinaryHelper{
         started = true
     }
 
+
+
     fun uploadImage(name : String,filePath: String, onSuccess: (String) -> Unit) {
+
+        deleteImageAsync(name)  // deleting perv one
+
         MediaManager.get().upload(filePath)
             .option("resource_type", "image")
             .option("public_id",name)
@@ -60,15 +71,37 @@ object CloudinaryHelper{
             })
             .dispatch()
     }
-    fun fetchThatImage(name : String ,img : ImageView){
-        val imageUrl = MediaManager.get().url().generate(name)
+
+
+    fun deleteImageAsync(publicId: String) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val result = cloudinary.uploader().destroy(publicId, mapOf("invalidate" to true))
+                withContext(Dispatchers.Main) {
+                    Log.d("Cloudinary", "Delete result: $result")
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Log.e("Cloudinary", "Error: ${e.message}")
+                }
+            }
+        }
+    }
+
+
+    fun fetchThatImage(name: String, img: ImageView) {
+        val baseUrl = MediaManager.get().url().generate(name)
+        val cacheBustedUrl = "$baseUrl?nocache=${System.currentTimeMillis()}"
+
         Picasso.get()
-            .load(imageUrl)
-            .error(R.drawable.user)
+            .load(cacheBustedUrl)
+            .placeholder(R.drawable.loading_bar2)
+            .error(R.drawable.mark)
             .into(img)
     }
 
-    fun getRealPathFromURI(uri: Uri, context: Context): String? {
+
+    fun getRealPathFromURI(uri: Uri?, context: Context): String? {
         // Check if it's a document URI
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context, uri)) {
             // Handle different document URIs
@@ -102,21 +135,21 @@ object CloudinaryHelper{
                     return contentUri?.let { getDataColumn(context, it, selection, selectionArgs) }
                 }
             }
-        } else if ("content".equals(uri.scheme, ignoreCase = true)) {
+        } else if ("content".equals(uri?.scheme, ignoreCase = true)) {
             return getDataColumn(context, uri, null, null)
-        } else if ("file".equals(uri.scheme, ignoreCase = true)) {
-            return uri.path
+        } else if ("file".equals(uri?.scheme, ignoreCase = true)) {
+            return uri?.path
         }
         return null
     }
 
-    private fun getDataColumn(context: Context, uri: Uri, selection: String?, selectionArgs: Array<String>?): String? {
+    private fun getDataColumn(context: Context, uri: Uri?, selection: String?, selectionArgs: Array<String>?): String? {
         var cursor: Cursor? = null
         val column = "_data"
         val projection = arrayOf(column)
 
         try {
-            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            cursor = uri?.let { context.contentResolver.query(it, projection, selection, selectionArgs, null) }
             if (cursor != null && cursor.moveToFirst()) {
                 val columnIndex = cursor.getColumnIndexOrThrow(column)
                 return cursor.getString(columnIndex)
@@ -127,16 +160,16 @@ object CloudinaryHelper{
         return null
     }
 
-    private fun isExternalStorageDocument(uri: Uri): Boolean {
-        return "com.android.externalstorage.documents" == uri.authority
+    private fun isExternalStorageDocument(uri: Uri?): Boolean {
+        return "com.android.externalstorage.documents" == uri?.authority
     }
 
-    private fun isDownloadsDocument(uri: Uri): Boolean {
-        return "com.android.providers.downloads.documents" == uri.authority
+    private fun isDownloadsDocument(uri: Uri?): Boolean {
+        return "com.android.providers.downloads.documents" == uri?.authority
     }
 
-    private fun isMediaDocument(uri: Uri): Boolean {
-        return "com.android.providers.media.documents" == uri.authority
+    private fun isMediaDocument(uri: Uri?): Boolean {
+        return "com.android.providers.media.documents" == uri?.authority
     }
 
 }
