@@ -23,6 +23,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.adapter.ChatsAdapter;
 import com.example.chatify.databinding.ActivityChatBinding;
@@ -78,13 +79,15 @@ public class ChatActivity extends AppCompatActivity {
         userPhone = intent.getStringExtra("userPhone");
         UserBio = intent.getStringExtra("bio");
 
-
         if (receiverID != null) {
             binding.userName.setText(userName);
             if (userProfile != null && userProfile.isEmpty()) {
                 binding.imageProfile.setImageResource(R.drawable.user);
             }
         }
+
+        if(!CloudinaryHelper.INSTANCE.getStarted()) CloudinaryHelper.INSTANCE.initializeConfig(this);
+        CloudinaryHelper.INSTANCE.fetchThatImage(receiverID + "@userinfo", binding.imageProfile);
 
         // Back button click listener
         binding.backbtn.setOnClickListener(view -> finish());
