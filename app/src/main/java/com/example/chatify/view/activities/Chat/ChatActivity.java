@@ -236,8 +236,9 @@ public class ChatActivity extends AppCompatActivity {
     private void readChat() {
         try {
             DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
-            binding.recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this
-                    , LinearLayoutManager.VERTICAL, false));
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+            layoutManager.setStackFromEnd(true);
+            binding.recyclerView.setLayoutManager(layoutManager);
             adapter = new ChatsAdapter(receiverID,list, ChatActivity.this);
             binding.recyclerView.setAdapter(adapter);
             reference1.child("Chats").child(FirebaseAuth.getInstance().getUid() + receiverID).child("msg")
