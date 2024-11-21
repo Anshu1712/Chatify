@@ -44,12 +44,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         holder.userbio.setText(user.getBio());
 
         // Fetch profile image using CloudinaryHelper
-        if (user.getImageProfile() != null && !user.getImageProfile().isEmpty()) {
-            CloudinaryHelper.INSTANCE.fetchThatImage(user.getImageProfile() + "@userinfo", holder.imageProfile);
-        } else {
-            // Set a default image if there's no profile image
-            holder.imageProfile.setImageResource(R.drawable.user);
-        }
+        CloudinaryHelper.INSTANCE.fetchThatImage(user.getUserID() + "@userinfo", holder.imageProfile);
 
         // Set click listener for the item
         holder.itemView.setOnClickListener(new View.OnClickListener() {
