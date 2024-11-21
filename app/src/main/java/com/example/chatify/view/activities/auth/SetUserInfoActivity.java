@@ -54,8 +54,8 @@ public class SetUserInfoActivity extends AppCompatActivity {
 
 
         //  iise code se profile photo ayega
+        if (!CloudinaryHelper.INSTANCE.getStarted())CloudinaryHelper.INSTANCE.initializeConfig(this);
         CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo", binding.Change1);
-
 
         // Find the Spinner in the layout
         spinnerBio = findViewById(R.id.spinner);

@@ -86,6 +86,7 @@ public class Profile extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // iise code se profile photo ayega
+        if (!CloudinaryHelper.INSTANCE.getStarted())CloudinaryHelper.INSTANCE.initializeConfig(this);
         CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo", binding.Change);
 
         // Set a click listener on the back button to handle back navigation
