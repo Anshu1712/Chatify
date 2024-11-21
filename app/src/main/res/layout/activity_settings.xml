@@ -169,6 +169,7 @@
                             android:src="@drawable/key" />
 
                         <LinearLayout
+                            android:id="@+id/delAccount"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/btn_select"

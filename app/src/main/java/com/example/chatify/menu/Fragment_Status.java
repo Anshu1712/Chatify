@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.cloudinary.android.MediaManager;
 import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.databinding.FragmentStatusBinding;
