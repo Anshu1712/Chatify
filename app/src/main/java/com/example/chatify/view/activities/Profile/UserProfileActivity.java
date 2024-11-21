@@ -45,6 +45,9 @@ public class UserProfileActivity extends AppCompatActivity {
                 binding.imageProfile.setImageResource(R.drawable.user); // Default image
             }
 
+            if(!CloudinaryHelper.INSTANCE.getStarted()) CloudinaryHelper.INSTANCE.initializeConfig(this);
+            CloudinaryHelper.INSTANCE.fetchThatImage(receiverID + "@userinfo", binding.imageProfile);
+
             // Display phone number
             binding.numberTxt.setText(userNumber != null && !userNumber.isEmpty() ? userNumber : "No phone number available");
 

@@ -22,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.adapter.ContactAdapter;
 import com.example.chatify.databinding.ActivityAddContactBinding;
@@ -80,6 +81,7 @@ public class AddContact extends AppCompatActivity {
 
         // Request permissions for reading and writing contacts
         requestContactPermissions();
+
 
         // Initialize imageView and TextViews with the binding object
         imageView = binding.backButton;

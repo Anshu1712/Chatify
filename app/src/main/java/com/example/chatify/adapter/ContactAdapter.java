@@ -15,7 +15,6 @@ import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.model.user.Users;
 import com.example.chatify.view.activities.Chat.ChatActivity;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -44,9 +43,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         holder.username.setText(user.getUsername());
         holder.userbio.setText(user.getBio());
 
-        // Optionally, you can use CloudinaryHelper for other image handling
+        // Fetch profile image using CloudinaryHelper
         if (user.getImageProfile() != null && !user.getImageProfile().isEmpty()) {
-            CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo", holder.imageProfile);
+            CloudinaryHelper.INSTANCE.fetchThatImage(user.getImageProfile() + "@userinfo", holder.imageProfile);
         } else {
             // Set a default image if there's no profile image
             holder.imageProfile.setImageResource(R.drawable.user);

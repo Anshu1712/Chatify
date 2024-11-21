@@ -128,7 +128,7 @@ public class Fragment_Chat extends Fragment {
                                         "",
                                         documentSnapshot.getString("imageProfile")
                                         , documentSnapshot.getString("userPhone")
-                                        ,documentSnapshot.getString("bio")
+                                        , documentSnapshot.getString("bio")
                                 );
                                 list.add(chat);
                             } catch (Exception e) {
