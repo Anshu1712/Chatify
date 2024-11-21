@@ -52,13 +52,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.Holder
             CloudinaryHelper.INSTANCE.initializeConfig(context);
         }
 
-        // Load profile image using CloudinaryHelper
-        if (chatlist.getUrlProfile() != null && !chatlist.getUrlProfile().isEmpty()) {
-            CloudinaryHelper.INSTANCE.fetchThatImage(chatlist.getUserID() + "@userinfo", holder.profile);
-        } else {
-            // Set a default image if no profile image is available
-            holder.profile.setImageResource(R.drawable.user);
-        }
+        CloudinaryHelper.INSTANCE.fetchThatImage(chatlist.getUserID() + "@userInfo", holder.profile);
 
         // Handle click events for each RecyclerView item
         holder.itemView.setOnClickListener(view -> {
