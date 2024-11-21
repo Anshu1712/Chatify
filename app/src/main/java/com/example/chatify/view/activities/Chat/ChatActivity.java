@@ -149,9 +149,26 @@ public class ChatActivity extends AppCompatActivity {
         layoutManager.setStackFromEnd(true);
         binding.recyclerView.setLayoutManager(layoutManager);
 
+        binding.gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (isActionShown) {
+                    binding.layoutAction.setVisibility(View.GONE);
+                    isActionShown = false;
+                } else {
+                    binding.layoutAction.setVisibility(View.VISIBLE);
+                    isActionShown = true;
+                }
+
+                Intent pick = new Intent(Intent.ACTION_PICK);
+                pick.setType("image/*");
+                startActivityForResult(pick,IMAGE_GALLERY_REQUEST);
+            }
+        });
+
         readChat();
     }
-
 
     private void initBtnClick() {
         binding.sentBtn.setOnClickListener(view -> {
@@ -195,7 +212,7 @@ public class ChatActivity extends AppCompatActivity {
         Chats chats = new Chats(
                 today + ", " + currentTime,
                 text,
-                "TEXT",
+                "text",
                 firebaseUser.getUid(),
                 receiverID);
 
@@ -219,9 +236,10 @@ public class ChatActivity extends AppCompatActivity {
     private void readChat() {
         try {
             DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
-            binding.recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this
-                    , LinearLayoutManager.VERTICAL, false));
-            adapter = new ChatsAdapter(list, ChatActivity.this);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+            layoutManager.setStackFromEnd(true);
+            binding.recyclerView.setLayoutManager(layoutManager);
+            adapter = new ChatsAdapter(receiverID,list, ChatActivity.this);
             binding.recyclerView.setAdapter(adapter);
             reference1.child("Chats").child(FirebaseAuth.getInstance().getUid() + receiverID).child("msg")
                     .addValueEventListener(new ValueEventListener() {
@@ -230,12 +248,20 @@ public class ChatActivity extends AppCompatActivity {
                             list.clear();
                             if (snapshot.exists()) {
                                 for (DataSnapshot snap : snapshot.getChildren()) {
+
                                     String dateTime = snap.child("dateTime").getValue(String.class);
                                     String receiver = snap.child("receiver").getValue(String.class);
                                     String sender = snap.child("sender").getValue(String.class);
                                     String textMessage = snap.child("textMessage").getValue(String.class);
-                                    String type = snapshot.child("type").getValue(String.class);
-                                    Chats chats = new Chats(dateTime, textMessage, type, sender, receiver);
+                                    String type = snap.child("type").getValue(String.class);
+                                    String img_name = snap.child("ImageName").getValue(String.class);
+
+                                    Chats chats;
+                                    if(img_name == null)  chats = new Chats(dateTime, textMessage, type, sender, receiver);
+                                    else{
+                                        chats = new Chats(dateTime, textMessage, type, sender, receiver,img_name);
+                                        Log.d("empty07","fine okay");
+                                    }
                                     list.add(chats);
                                 }
                             }
@@ -271,6 +297,14 @@ public class ChatActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                 reviewImage(bitmap);
+
+                if(bitmap != null){
+                    Intent intent = new Intent(this,send_imgchat.class);
+                    intent.putExtra("img",imageUri);
+                    intent.putExtra("recuid",receiverID);
+                    startActivity(intent);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

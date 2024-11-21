@@ -86,6 +86,7 @@ public class Profile extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // iise code se profile photo ayega
+        if(!CloudinaryHelper.INSTANCE.getStarted()) CloudinaryHelper.INSTANCE.initializeConfig(this);
         CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo", binding.Change);
 
         // Set a click listener on the back button to handle back navigation
@@ -123,7 +124,6 @@ public class Profile extends AppCompatActivity {
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                             // Save the Bitmap globally in the Common class or any other storage
                             Common.IMAGE_BITMAP = resource;
-
                             // Launch the activity with the image transition
                             ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
                                     .makeSceneTransitionAnimation(Profile.this, binding.Change, "Name");

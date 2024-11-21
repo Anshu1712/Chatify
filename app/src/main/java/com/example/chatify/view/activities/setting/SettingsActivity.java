@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,6 +59,12 @@ public class SettingsActivity extends AppCompatActivity {
 
         if(!CloudinaryHelper.INSTANCE.getStarted()) CloudinaryHelper.INSTANCE.initializeConfig(this);
         CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid()+"@userinfo",binding.imageProfile);
+
+        binding.delAccount.setOnClickListener(v ->{
+            CloudinaryHelper.INSTANCE.deleteImageAsync(FirebaseAuth.getInstance().getUid().toString()+"@userInfo");
+            Toast.makeText(this,"deleted",Toast.LENGTH_SHORT).show();
+        });
+
 
         // Initialize Firebase Firestore and Authentication instances
         firestore = FirebaseFirestore.getInstance();
