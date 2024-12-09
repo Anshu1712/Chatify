@@ -1,12 +1,10 @@
 package com.example.chatify.view.activities.Chat
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper
 import com.example.chatify.R
@@ -27,32 +25,35 @@ class send_imgchat : AppCompatActivity() {
             CloudinaryHelper.initializeConfig(this)
         }
 
-        val img : Uri ?= intent.getParcelableExtra("img")
-        val rec : String ?= intent.getStringExtra("recuid")
+        val img: Uri? = intent.getParcelableExtra("img")
+        val rec: String? = intent.getStringExtra("recuid")
 
         //Toast.makeText(this,"@"+rec, Toast.LENGTH_SHORT).show()
         findViewById<ImageView>(R.id.img_show).setImageURI(img)
 
-        findViewById<ImageView>(R.id.send).setOnClickListener{
-            val str : String = findViewById<EditText>(R.id.etd).text.toString()
-            val name : String = FirebaseAuth.getInstance().currentUser?.uid.toString() + System.currentTimeMillis() + rec
+        findViewById<ImageView>(R.id.send).setOnClickListener {
+            val str: String = findViewById<EditText>(R.id.etd).text.toString()
+            val name: String =
+                FirebaseAuth.getInstance().currentUser?.uid.toString() + System.currentTimeMillis() + rec
 
-            CloudinaryHelper.uploadImage(name,
-                img?.let { uri -> CloudinaryHelper.getRealPathFromURI(uri,this) }.toString()
-            ){ task->
-                runOnUiThread{
-                    sendTextMessage(str, rec.toString(),name)
+            CloudinaryHelper.uploadImage(
+                name,
+                img?.let { uri -> CloudinaryHelper.getRealPathFromURI(uri, this) }.toString()
+            ) { task ->
+                runOnUiThread {
+                    sendTextMessage(str, rec.toString(), name)
                 }
             }
 
         }
     }
 
-    private fun sendTextMessage(text: String,receiverID : String,imgName : String) {
+    private fun sendTextMessage(text: String, receiverID: String, imgName: String) {
         val date = Calendar.getInstance().time
         val today = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)
 
-        val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Calendar.getInstance().time)
+        val currentTime =
+            SimpleDateFormat("HH:mm", Locale.getDefault()).format(Calendar.getInstance().time)
 
         val chats = Chats(
             "$today, $currentTime",
@@ -91,5 +92,4 @@ class send_imgchat : AppCompatActivity() {
             .child(receiverID).child(FirebaseAuth.getInstance().uid ?: "")
         chatRef2.child("chatid").setValue(FirebaseAuth.getInstance().uid)
     }
-
 }

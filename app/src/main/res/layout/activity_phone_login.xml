@@ -8,34 +8,28 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:padding="@dimen/_16sdp"
         tools:context=".view.activities.auth.phoneLoginActivity">
 
         <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="@dimen/_50sdp"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="@dimen/_5sdp">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="10dp"
+                android:padding="@dimen/_10sdp"
                 android:text="@string/enter_your_phone_number"
                 android:textColor="@color/md_theme_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:src="@drawable/baseline_more_vert_24" />
+            
         </LinearLayout>
 
         <LinearLayout
@@ -44,14 +38,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout3"
             android:layout_centerInParent="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="@dimen/_10sdp">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottie"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
                 android:layout_gravity="center_horizontal"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
@@ -65,17 +59,17 @@
             android:layout_below="@id/lottie1"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="@dimen/_20sdp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:padding="5dp"
+                android:padding="@dimen/_2sdp"
                 android:text="@string/chatify_will_send_an_sms_message_to_verify_your_phone_number"
                 android:textAllCaps="true"
                 android:textSize="15sp"
@@ -84,14 +78,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="@dimen/_2sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
+                    android:padding="@dimen/_2sdp"
                     android:text="+"
                     android:textSize="20sp" />
 
@@ -99,7 +93,7 @@
                     android:id="@+id/phoneNumberLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="@dimen/_8sdp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/phoneNumberEt"
@@ -116,7 +110,7 @@
                     android:id="@+id/phoneNumberLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="@dimen/_8sdp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/phoneNumberEt2"
@@ -134,10 +128,10 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/phoneNumberLayout3"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="200dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp">
+                android:layout_marginStart="@dimen/_8sdp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phoneNumberEt3"
@@ -158,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout2"
             android:layout_centerInParent="true"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="@dimen/_100sdp"
             android:text="@string/next"
             android:textColor="@color/md_theme_primary"
             android:textStyle="bold" />

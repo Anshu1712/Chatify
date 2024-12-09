@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,15 +15,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.chatify.view.activities.contact.AddContact;
+import com.example.chatify.R;
+import com.example.chatify.adapter.MyAdapter;
+import com.example.chatify.databinding.ActivityMainBinding;
 import com.example.chatify.menu.Fragment_Call;
 import com.example.chatify.menu.Fragment_Chat;
 import com.example.chatify.menu.Fragment_Status;
-import com.example.chatify.adapter.MyAdapter;
+import com.example.chatify.view.activities.contact.AddContact;
 import com.example.chatify.view.activities.contact.NewGroup;
-import com.example.chatify.R;
 import com.example.chatify.view.activities.setting.SettingsActivity;
-import com.example.chatify.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -44,13 +45,8 @@ public class MainActivity extends AppCompatActivity {
         // Initializing the binding object to bind the layout file
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        
 
-        // Handling edge-to-edge display insets for a modern UI
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         // Initializing TabLayout, ViewPager2, and FloatingActionButton using the binding object
         tabLayout = binding.tab;
@@ -159,9 +155,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 floatingActionButton.setImageResource(R.drawable.camera); // Set FAB icon to "camera"
+                // Set click listener to start the AddContact activity
+                floatingActionButton.setOnClickListener(v -> {
+                    Toast.makeText(this, "This feature is not available", Toast.LENGTH_SHORT).show();
+                });
                 break;
             case 2:
                 floatingActionButton.setImageResource(R.drawable.call); // Set FAB icon to "call"
+                floatingActionButton.setOnClickListener(v -> {
+                    Toast.makeText(this, "This feature is not available", Toast.LENGTH_SHORT).show();
+                });
                 break;
             default:
                 floatingActionButton.setImageResource(R.drawable.add); // Default icon

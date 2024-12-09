@@ -1,48 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="7dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="@dimen/_2sdp"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_2sdp"
+    android:layout_marginEnd="@dimen/_2sdp"
+    android:gravity="end"
+    android:paddingTop="@dimen/_2sdp"
+    android:paddingBottom="@dimen/_2sdp"
+    android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="240dp"
-        app:cardUseCompatPadding="true"
+    <!-- Bubble Container -->
+    <LinearLayout
+        android:layout_width="@dimen/_190sdp"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:background="@color/gradient_end_color"
-        android:backgroundTint="@color/gradient_end_color"
-        app:cardCornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@drawable/whatsapp_chat_bubble_right"
+        android:orientation="vertical"
+        android:padding="@dimen/_8sdp">
 
+        <!-- Image -->
+        <ImageView
+            android:id="@+id/chatr_img"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_190sdp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/about" />
+
+        <!-- Caption and Timestamp -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="2dp">
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_2sdp">
 
-            <ImageView
-                android:id="@+id/chatr_img"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:padding="8dp"
-                android:src="@drawable/about" />
-
+            <!-- Caption -->
             <TextView
                 android:id="@+id/chatr_img_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:maxWidth="@dimen/_250sdp"
+                android:maxHeight="@dimen/_30sdp"
+                android:maxLines="5"
+                android:padding="@dimen/_5sdp"
+                android:ellipsize="end"
+                android:text="@string/this_is_text2"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/chat_timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="5dp"
-                android:text="This is Text !!"
-                android:textColor="#FFFFFF"
-                android:textSize="18dp" />
-
+                android:gravity="center"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginTop="@dimen/_9sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="12:34 PM"
+                android:textColor="@color/md_theme_outline"
+                android:textSize="9sp"
+                tools:ignore="SmallSp" />
         </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</LinearLayout>

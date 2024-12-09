@@ -58,4 +58,12 @@
     <string name="audio">Audio</string>
     <string name="location">Location</string>
     <string name="send_image">Send Image</string>
+    <string name="this_is_text">This is Text !!</string>
+    <string name="this_is_text2">This is Text !!</string>
+    <string name="security_notifications_change_number">Security notifications, change number</string>
+    <string name="block_contact_disappearing_messages">Block contact, disappearing messages</string>
+    <string name="english_device_s_language">English (device\'s language)</string>
+    <string name="help_center_contact_us_privacy_policy">help center, contact us, privacy policy</string>
+    <string name="unlock_chat_using_fingerprint">Unlock Chat using Fingerprint</string>
+    <string name="_12_34_pm">12:34 PM</string>
 </resources>

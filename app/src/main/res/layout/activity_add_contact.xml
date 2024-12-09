@@ -27,12 +27,12 @@
 
                     <ImageView
                         android:id="@+id/backButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
                         android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:padding="10dp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:padding="@dimen/_10sdp"
                         android:scaleType="fitXY"
                         android:src="@drawable/back" />
 
@@ -59,26 +59,26 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="5dp">
+                android:padding="@dimen/_5sdp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image"
-                    android:layout_width="46dp"
-                    android:layout_height="46dp"
-                    android:layout_marginStart="6dp"
-                    android:padding="2dp"
+                    android:layout_width="@dimen/_36sdp"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:padding="@dimen/_2sdp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/adduser"
                     app:civ_border_color="#727970"
-                    app:civ_border_width="2dp" />
+                    app:civ_border_width="@dimen/_2sdp" />
 
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="14dp"
-                    android:padding="2dp"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:padding="@dimen/_2sdp"
                     android:text="@string/new_user"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -88,29 +88,29 @@
                 android:id="@+id/newContact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="5dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/Contact"
-                    android:layout_width="46dp"
-                    android:layout_height="46dp"
-                    android:layout_marginStart="6dp"
-                    android:padding="2dp"
+                    android:layout_width="@dimen/_36sdp"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:padding="@dimen/_2sdp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/newgroup"
                     app:civ_border_color="#727970"
-                    app:civ_border_width="2dp" />
+                    app:civ_border_width="@dimen/_2sdp" />
 
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="14dp"
-                    android:padding="2dp"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:padding="@dimen/_2sdp"
                     android:text="@string/new_group"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -123,10 +123,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:letterSpacing=".25"
-                    android:padding="2dp"
+                    android:padding="@dimen/_2sdp"
                     android:text="@string/contact_on_chatify"
                     android:textAllCaps="true"
                     android:textColor="#727970"
@@ -138,8 +138,8 @@
                 android:layout_width="match_parent"
                 android:layout_height=".2dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
                 android:background="#727970" />
 
             <LinearLayout
@@ -152,7 +152,7 @@
                     android:id="@+id/contactsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="8dp"
+                    android:padding="@dimen/_8sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/newContact" />

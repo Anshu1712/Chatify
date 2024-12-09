@@ -48,31 +48,42 @@ dependencies {
     implementation libs.core.ktx
     implementation libs.firebase.storage
     implementation libs.firebase.database
+    implementation libs.firebase.messaging
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
     // All:
-    implementation("com.cloudinary:cloudinary-android:3.0.2")
+    implementation(libs.cloudinary.android.v302)
 
     // Download + Preprocess:
-    implementation("com.cloudinary:cloudinary-android-download:3.0.2")
-    implementation("com.cloudinary:cloudinary-android-preprocess:3.0.2")
-    implementation("com.squareup.picasso:picasso:2.8")
+    implementation(libs.cloudinary.cloudinary.android.download)
+    implementation(libs.com.cloudinary.cloudinary.android.preprocess)
+    implementation(libs.picasso)
 
-    implementation("com.google.firebase:firebase-auth")
-    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation(libs.google.firebase.auth)
+    implementation(platform(libs.firebase.bom))
 
 
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.airbnb.android:lottie:6.5.0'
-    implementation 'com.github.bumptech.glide:glide:4.16.0'
-    implementation("com.cloudinary:cloudinary-android-download:3.0.2")
-    implementation("com.cloudinary:cloudinary-android-preprocess:3.0.2")
-    implementation 'com.cloudinary:cloudinary-android:2.0.0'  // or the latest version
+    implementation libs.viewpager2
 
-    implementation 'com.jsibbold:zoomage:1.3.1'
+    implementation libs.recyclerview
+    implementation libs.circleimageview
+    implementation libs.lottie
 
+    implementation libs.glide
+    implementation(libs.cloudinary.cloudinary.android.download)
+    implementation(libs.com.cloudinary.cloudinary.android.preprocess)
+    implementation libs.com.cloudinary.cloudinary.android  // or the latest version
+
+    implementation libs.zoomage
+
+    implementation libs.biometric
+
+    implementation libs.sdp.android
+
+//    //noinspection GradleDynamicVersion
+//    implementation 'org.webrtc:google-webrtc:1.0.+'
+//    implementation libs.gson
+//    implementation libs.permissionx
 }

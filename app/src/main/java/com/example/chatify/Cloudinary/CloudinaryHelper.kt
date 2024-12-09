@@ -95,8 +95,8 @@ object CloudinaryHelper{
 
         Picasso.get()
             .load(cacheBustedUrl)
-            .placeholder(R.drawable.loading_bar2)
-            .error(R.drawable.mark)
+            .placeholder(R.drawable.reload)
+            .error(R.drawable.user)
             .into(img)
     }
 

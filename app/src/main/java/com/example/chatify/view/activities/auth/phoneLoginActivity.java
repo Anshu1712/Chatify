@@ -73,7 +73,7 @@ public class phoneLoginActivity extends AppCompatActivity {
                         progressDialog.show();  // Show the progress dialog.
                         startPhoneNumberVerification(phone);  // Start the phone number verification process.
                     } else {
-                        Toast.makeText(phoneLoginActivity.this, "Please enter a valid phone number", Toast.LENGTH_SHORT).show();  // Show a toast if the phone number is invalid.
+                        Toast.makeText(phoneLoginActivity.this, "Please enter a phone number", Toast.LENGTH_SHORT).show();  // Show a toast if the phone number is invalid.
                     }
                 } else if (buttonText.equals("Confirm")) {  // If the button text is "Confirm", verify the code entered by the user.
                     String code = binding.phoneNumberEt3.getText().toString();  // Get the verification code entered by the user.

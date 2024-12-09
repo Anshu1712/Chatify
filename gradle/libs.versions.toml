@@ -1,9 +1,18 @@
 [versions]
 agp = "8.5.0"
+biometric = "1.1.0"
+circleimageview = "3.1.0"
+cloudinaryAndroid = "3.0.2"
+cloudinaryAndroidDownloadVersion = "3.0.2"
+cloudinaryAndroidVersion = "2.0.0"
+firebaseBom = "33.5.1"
+glide = "4.16.0"
+gson = "2.11.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
+lottie = "6.5.0"
 material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
@@ -14,12 +23,30 @@ kotlin = "2.0.21"
 coreKtx = "1.15.0"
 firebaseStorage = "21.0.1"
 firebaseDatabase = "21.0.0"
+firebaseMessaging = "24.1.0"
+permissionx = "1.8.1"
+picasso = "2.8"
+recyclerview = "1.3.2"
+sdpAndroid = "1.1.1"
+viewpager2 = "1.0.0"
+zoomage = "1.3.1"
 
 [libraries]
+biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
+circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
+cloudinary-android-v302 = { module = "com.cloudinary:cloudinary-android", version.ref = "cloudinaryAndroid" }
+cloudinary-cloudinary-android-download = { module = "com.cloudinary:cloudinary-android-download", version.ref = "cloudinaryAndroidDownloadVersion" }
+com-cloudinary-cloudinary-android = { module = "com.cloudinary:cloudinary-android", version.ref = "cloudinaryAndroidVersion" }
+com-cloudinary-cloudinary-android-preprocess = { module = "com.cloudinary:cloudinary-android-preprocess", version.ref = "cloudinaryAndroidDownloadVersion" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
@@ -28,6 +55,13 @@ firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+permissionx = { module = "com.guolindev.permissionx:permissionx", version.ref = "permissionx" }
+picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
+recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+sdp-android = { module = "com.intuit.sdp:sdp-android", version.ref = "sdpAndroid" }
+viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
+zoomage = { module = "com.jsibbold:zoomage", version.ref = "zoomage" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

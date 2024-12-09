@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.adapter.ChatsAdapter;
+import com.example.chatify.call.videoCall;
 import com.example.chatify.databinding.ActivityChatBinding;
 import com.example.chatify.model.chat.Chats;
 import com.example.chatify.view.activities.Profile.UserProfileActivity;
@@ -100,10 +101,18 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        binding.camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChatActivity.this, "Camera", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChatActivity.this, "This feature is not available", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         binding.video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(ChatActivity.this, videoCall.class));
                 Toast.makeText(ChatActivity.this, "Video call", Toast.LENGTH_SHORT).show();
                 Toast.makeText(ChatActivity.this, "This feature is not available", Toast.LENGTH_SHORT).show();
             }
