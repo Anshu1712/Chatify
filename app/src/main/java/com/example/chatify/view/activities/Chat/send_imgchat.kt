@@ -21,6 +21,11 @@ class send_imgchat : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_imgchat)
 
+        findViewById<ImageView>(R.id.backbtn).setOnClickListener {
+            finish() // Closes the current activity and navigates back to the previous one
+        }
+
+
         if (!CloudinaryHelper.started) {
             CloudinaryHelper.initializeConfig(this)
         }
