@@ -5,20 +5,17 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,10 +35,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallService;
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig;
+import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton;
+import com.zegocloud.uikit.service.defines.ZegoUIKitUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +57,7 @@ public class ChatActivity extends AppCompatActivity {
     private List<Chats> list;
     private String userProfile, userName, userPhone, UserBio;
     private boolean isActionShown = false;
-
+    ZegoSendCallInvitationButton videocall, audiocall;
     private int IMAGE_GALLERY_REQUEST = 111;
     private Uri imageUri;
 
@@ -67,12 +69,15 @@ public class ChatActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
 
+
         Intent intent = getIntent();
         userName = intent.getStringExtra("username");
         receiverID = intent.getStringExtra("userID");
         userProfile = intent.getStringExtra("imageProfile");
         userPhone = intent.getStringExtra("userPhone");
         UserBio = intent.getStringExtra("bio");
+        audiocall = findViewById(R.id.audio);
+        videocall = findViewById(R.id.video);
 
         if (receiverID != null) {
             binding.userName.setText(userName);
@@ -103,22 +108,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        binding.video.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ChatActivity.this, videoCall.class));
-                Toast.makeText(ChatActivity.this, "Video call", Toast.LENGTH_SHORT).show();
-                Toast.makeText(ChatActivity.this, "This feature is not available", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        binding.audio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(ChatActivity.this, "Audio call", Toast.LENGTH_SHORT).show();
-                Toast.makeText(ChatActivity.this, "This feature is not available", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         binding.more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,7 +164,75 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         readChat();
+
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                videocall();
+//                audiocall();
+//                initializeZego(userName,receiverID);
+//            }
+//        },1500);
     }
+
+//    void initializeZego(String userName, String receiverID) {
+//        long appID = 1404366264; // Your Zego App ID
+//        String appSign = "48af2a5ee5ed0f67712fce2b6599630f7d45a252ab698fa6d1f26c747bfd014f"; // Your Zego App Sign
+//
+//        // Initialize the call invitation configuration
+//        ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
+//
+//        // Use the Firebase user ID as Zego user ID
+//        String zegoUserID = firebaseUser.getUid();
+//
+//        // Initialize Zego SDK with necessary parameters
+//        ZegoUIKitPrebuiltCallService.init(getApplication(), appID, appSign, userName, zegoUserID, callInvitationConfig);
+//
+//        Log.d("Zego", "Zego initialized successfully with user: " + userName);
+//    }
+//
+//    void audiocall() {
+//        // Check if the user is logged in to Zego before sending the invitation
+//        if (ZegoUIKitPrebuiltCallService.isUserLoggedIn()) {
+//            audiocall.setIsVideoCall(false); // Set as an audio call
+//            audiocall.setResourceID("zego_uikit_call"); // Set the resource ID for audio call
+//
+//            // Set invitee with correct user data
+//            ZegoUIKitUser user = new ZegoUIKitUser(userName, receiverID);
+//            audiocall.setInvitees(Collections.singletonList(user)); // Set the invitee for the call
+//
+//            // Send the audio call invitation when button is clicked
+//            audiocall.setOnClickListener(v -> {
+//                Log.d("Zego", "Sending Audio Call Invitation");
+//                audiocall.sendInvitation(); // Sends the invitation for audio call
+//            });
+//        } else {
+//            Log.d("Zego", "User not logged in to Zego. Cannot send invitation.");
+//            Toast.makeText(this, "User is not logged in to Zego. Please try again.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    void videocall() {
+//        // Check if the user is logged in to Zego before sending the invitation
+//        if (ZegoUIKitPrebuiltCallService.isUserLoggedIn()) {
+//            videocall.setIsVideoCall(true); // Set as a video call
+//            videocall.setResourceID("zego_uikit_call"); // Set the resource ID for video call
+//
+//            // Set invitee with correct user data
+//            ZegoUIKitUser user = new ZegoUIKitUser(userName, receiverID);
+//            videocall.setInvitees(Collections.singletonList(user)); // Set the invitee for the call
+//
+//            // Send the video call invitation when button is clicked
+//            videocall.setOnClickListener(v -> {
+//                Log.d("Zego", "Sending Video Call Invitation");
+//                videocall.sendInvitation(); // Sends the invitation for video call
+//            });
+//        } else {
+//            Log.d("Zego", "User not logged in to Zego. Cannot send invitation.");
+//            Toast.makeText(this, "User is not logged in to Zego. Please try again.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     private void initBtnClick() {
         binding.sentBtn.setOnClickListener(view -> {

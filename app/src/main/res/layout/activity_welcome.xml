@@ -13,18 +13,18 @@
         android:layout_above="@+id/linearLayout"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/_54sdp"
-        android:layout_marginBottom="@dimen/_80sdp"
+        android:layout_marginTop="54dp"
+        android:layout_marginBottom="80dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/_20sdp">
+        android:padding="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_30sdp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
             android:text="@string/welcome_to_chatify"
             android:textColor="@color/md_theme_primary"
             android:textSize="25sp"
@@ -32,11 +32,11 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottie"
-            android:layout_width="@dimen/_130sdp"
-            android:layout_height="@dimen/_130sdp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/splash" />
@@ -44,9 +44,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:padding="@dimen/_15sdp"
+            android:padding="15dp"
             android:text="Read our Privacy Policy Tap and continue to accept the Terms of Service"
             android:textSize="16sp" />
 
@@ -55,9 +55,9 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_50sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="5dp"
             android:text="Agree and continue"
             android:textColor="@color/md_theme_primary"
             android:textStyle="bold" />
@@ -70,7 +70,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/_20sdp">
+        android:padding="20dp">
 
         <TextView
             android:layout_width="wrap_content"

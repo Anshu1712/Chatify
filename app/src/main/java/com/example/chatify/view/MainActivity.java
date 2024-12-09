@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
         // Initializing the binding object to bind the layout file
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        
-
 
         // Initializing TabLayout, ViewPager2, and FloatingActionButton using the binding object
         tabLayout = binding.tab;
@@ -146,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         switch (position) {
             case 0:
                 floatingActionButton.setImageResource(R.drawable.add); // Set FAB icon to "add"
-
                 // Set click listener to start the AddContact activity
                 floatingActionButton.setOnClickListener(v -> {
                     Intent intent = new Intent(MainActivity.this, AddContact.class);

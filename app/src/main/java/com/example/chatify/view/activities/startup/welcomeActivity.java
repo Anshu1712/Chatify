@@ -27,6 +27,5 @@ public class welcomeActivity extends AppCompatActivity {
                 startActivity(new Intent(welcomeActivity.this, phoneLoginActivity.class));
             }
         });
-       
     }
 }

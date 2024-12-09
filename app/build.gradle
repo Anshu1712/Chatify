@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.chatify"
-        minSdk 25
+        minSdk 26
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -79,11 +79,6 @@ dependencies {
     implementation libs.zoomage
 
     implementation libs.biometric
-
-    implementation libs.sdp.android
-
-//    //noinspection GradleDynamicVersion
-//    implementation 'org.webrtc:google-webrtc:1.0.+'
-//    implementation libs.gson
-//    implementation libs.permissionx
+    
+    implementation (libs.zego.uikit.prebuilt.call.android)
 }

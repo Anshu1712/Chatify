@@ -11,14 +11,14 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="@dimen/_20sdp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tvPrompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginBottom="20dp"
             android:text="@string/unlock_chat_using_fingerprint"
             android:textSize="16sp" />
 
@@ -27,15 +27,15 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_100sdp"
+        android:layout_marginBottom="200dp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/ivFingerprint"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/fingerprint" />
 
     </LinearLayout>
