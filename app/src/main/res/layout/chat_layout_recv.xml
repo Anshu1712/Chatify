@@ -3,28 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="@dimen/_2sdp"
-    android:layout_marginStart="@dimen/_10sdp"
-    android:layout_marginBottom="@dimen/_2sdp"
-    android:layout_marginEnd="@dimen/_2sdp"
+    android:layout_marginTop="2dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginBottom="2dp"
+    android:layout_marginEnd="2dp"
     android:gravity="end"
-    android:paddingTop="@dimen/_2sdp"
-    android:paddingBottom="@dimen/_2sdp"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
     android:orientation="vertical">
 
     <!-- Bubble Container -->
     <LinearLayout
-        android:layout_width="@dimen/_190sdp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:background="@drawable/whatsapp_chat_bubble_right"
         android:orientation="vertical"
-        android:padding="@dimen/_8sdp">
+        android:padding="8dp">
 
         <!-- Image -->
         <ImageView
             android:id="@+id/chatr_img"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_190sdp"
+            android:layout_height="250dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:src="@drawable/about" />
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_2sdp">
+            android:layout_marginTop="2dp">
 
             <!-- Caption -->
             <TextView
@@ -42,11 +42,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="@dimen/_4sdp"
-                android:maxWidth="@dimen/_250sdp"
-                android:maxHeight="@dimen/_30sdp"
+                android:layout_marginEnd="4dp"
+                android:maxWidth="250dp"
+                android:maxHeight="30dp"
                 android:maxLines="5"
-                android:padding="@dimen/_5sdp"
+                android:padding="5dp"
                 android:ellipsize="end"
                 android:text="@string/this_is_text2"
                 android:textColor="#000000"
@@ -58,8 +58,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_gravity="center_vertical|end"
-                android:layout_marginTop="@dimen/_9sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="5dp"
                 android:text="12:34 PM"
                 android:textColor="@color/md_theme_outline"
                 android:textSize="9sp"

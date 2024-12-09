@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gradient_end_color"
-            android:padding="@dimen/_7sdp"
+            android:padding="7dp"
             android:text="@string/enter_your_name"
             android:textColor="@color/white"
             android:textSize="15sp"
@@ -26,7 +26,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="@dimen/_7sdp" />
+            android:layout_marginStart="7dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- LinearLayout for Form Section -->
@@ -34,14 +34,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/_5sdp">
+        android:padding="5dp">
 
         <!-- Gallery Section for Name Input -->
         <LinearLayout
             android:id="@+id/gallery1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_margin="10dp"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:clickable="true"
@@ -51,8 +51,8 @@
                 android:id="@+id/phoneNumberLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:layout_marginEnd="@dimen/_25sdp">
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phoneNumberEt6"
@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="@dimen/_16sdp">
+            android:layout_marginTop="16dp">
 
             <!-- First Next Button Section -->
             <!-- Added margin to separate buttons -->
@@ -84,7 +84,7 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginEnd="20dp"
                 android:text="cancel"
                 android:textColor="@color/md_theme_primary"
                 android:textStyle="bold" />
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="update"
-                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginStart="20dp"
                 android:textColor="@color/md_theme_primary"
                 android:textStyle="bold" />
         </LinearLayout>

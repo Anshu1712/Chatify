@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-sdk
+        android:minSdkVersion="25"
+        tools:overrideLibrary="com.zegocloud.uikit.prebuilt.call" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <!-- Permission to read contacts -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,7 +18,6 @@
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +30,9 @@
         android:theme="@style/Theme.Chatify"
         tools:ignore="ExtraText"
         tools:targetApi="31">
+        <activity
+            android:name=".view.activities.auth.login"
+            android:exported="false" />
         <activity
             android:name=".call.videoCall"
             android:exported="false" />

@@ -13,15 +13,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_50sdp"
+            android:padding="5dp"
+            android:layout_marginTop="50dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginTop="25dp"
                 android:text="Profile info"
                 android:textColor="@color/md_theme_primary"
                 android:textSize="17sp"
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginTop="25dp"
                 android:text="please provide your name and an optional profile photo"
                 android:textColor="#5C5A5A"
                 android:textSize="14sp"
@@ -40,23 +40,23 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/Change1"
-                android:layout_width="@dimen/_120sdp"
-                android:layout_height="@dimen/_120sdp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/_20sdp"
-                android:padding="@dimen/_2sdp"
+                android:layout_margin="20dp"
+                android:padding="2dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/user"
                 app:civ_border_color="@color/md_theme_primary"
                 app:civ_border_overlay="true"
-                app:civ_border_width="@dimen/_2sdp" />
+                app:civ_border_width="2dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/phoneNumberLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:layout_marginEnd="@dimen/_25sdp">
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phoneNumberEt2"
@@ -77,14 +77,14 @@
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:layout_marginEnd="@dimen/_25sdp">
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phoneNumberEt3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginTop="5dp"
                     android:hint="Type your bio here"
                     android:importantForAccessibility="yes"
                     android:inputType="textPersonName"
@@ -98,10 +98,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="10dp"
                 android:id="@+id/spinner"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:layout_marginEnd="@dimen/_25sdp"/>
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"/>
         </LinearLayout>
 
 
@@ -112,8 +112,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/_100sdp"
-            android:layout_marginBottom="@dimen/_30sdp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="30dp"
             android:text="@string/next"
             android:textColor="@color/md_theme_primary"
             android:textStyle="bold" />

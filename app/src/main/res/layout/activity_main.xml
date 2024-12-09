@@ -41,7 +41,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="wrap_content"
                 app:title="Chatify"
                 app:titleTextAppearance="@style/ToolbarTitleStyle" />
 
@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/_16sdp"
+        android:layout_margin="16dp"
         android:backgroundTint="@color/md_theme_primary"
         android:onClick="contact"
         android:src="@drawable/add" />

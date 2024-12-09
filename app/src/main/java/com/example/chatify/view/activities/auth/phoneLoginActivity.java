@@ -44,7 +44,6 @@ public class phoneLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);  // Enables edge-to-edge content for modern UI experiences (no status bar).
         binding = DataBindingUtil.setContentView(this, R.layout.activity_phone_login);  // Using DataBinding to bind the XML views to the activity.
 
         mAuth = FirebaseAuth.getInstance();  // Initializes FirebaseAuth instance for user authentication.
