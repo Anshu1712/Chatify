@@ -21,11 +21,12 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/image_profile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:src="@drawable/user" />
 
                 <ImageView
+                    android:id="@+id/btnPickImage"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignEnd="@id/image_profile"

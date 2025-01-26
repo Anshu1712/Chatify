@@ -2,6 +2,7 @@ package com.example.chatify.view.activities.Profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -53,6 +54,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
             // Display bio
             binding.bioo.setText(userBio != null && !userBio.isEmpty() ? userBio : "No bio available");
+            Log.d("UserProfileActivity", "User Bio Text: " + userBio);
+
         } else {
             Toast.makeText(this, "User data is missing!", Toast.LENGTH_SHORT).show();
         }

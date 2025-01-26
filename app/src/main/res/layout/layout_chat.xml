@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="5dp"
     android:orientation="horizontal"
     android:padding="10dp">
 
@@ -13,8 +13,8 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottie_placeholder"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             app:lottie_autoPlay="true"
@@ -23,8 +23,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image_profile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:civ_border_color="@color/md_theme_primary"
             app:civ_border_overlay="true"
             app:civ_border_width="1dp"

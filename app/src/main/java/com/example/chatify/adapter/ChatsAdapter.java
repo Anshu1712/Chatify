@@ -1,5 +1,6 @@
 package com.example.chatify.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -55,14 +56,18 @@ public class ChatsAdapter extends RecyclerView.Adapter {
             View view = LayoutInflater.from(context).inflate(R.layout.chat_layout_recv, parent, false);
             return new ViewHolder4(view);
         }
-
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
+        Chats chat = list.get(position);
+        String time = String.valueOf(chat.getDataTime());
+
         if (holder instanceof ViewHolder1) {
             ViewHolder1 v = (ViewHolder1) holder;
             v.textMessage.setText(list.get(position).textMessage);
+
         } else if (holder instanceof ViewHolder2) {
             ViewHolder2 v = (ViewHolder2) holder;
             v.textMessage.setText(list.get(position).textMessage);
@@ -122,19 +127,29 @@ public class ChatsAdapter extends RecyclerView.Adapter {
 
 class ViewHolder1 extends RecyclerView.ViewHolder {
     public TextView textMessage;
+    public TextView time;
+    public TextView date;
+
+
 
     public ViewHolder1(@NonNull View itemView) {
         super(itemView);
         textMessage = itemView.findViewById(R.id.txtLift);
+        time = itemView.findViewById(R.id.chat_timeRecive);
+        date = itemView.findViewById(R.id.dateReciver);
     }
 }
 
 class ViewHolder2 extends RecyclerView.ViewHolder {
     public TextView textMessage;
+    public TextView time;
+    public TextView date;
 
     public ViewHolder2(@NonNull View itemView) {
         super(itemView);
         textMessage = itemView.findViewById(R.id.txtRight);
+        time = itemView.findViewById(R.id.chat_timeSend);
+        date = itemView.findViewById(R.id.dateSender);
     }
 }
 

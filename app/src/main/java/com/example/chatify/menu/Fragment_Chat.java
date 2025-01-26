@@ -1,7 +1,6 @@
 package com.example.chatify.menu;
 
 // Importing necessary Android and custom classes for the fragment, RecyclerView, adapter, and model
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -37,16 +36,9 @@ import java.util.Objects;
 
 public class Fragment_Chat extends Fragment {
 
-
     private static final String TAG = "Fragment_Chat";
 
-    // Default constructor for the Fragment. No special initialization is needed here.
-    public Fragment_Chat() {
-        // Required empty public constructor
-    }
-
-    // Declare RecyclerView variable, which will be used to display the list of chat data.
-
+    // Declare Firebase instances and UI elements
     private FirebaseUser firebaseUser;
     private DatabaseReference reference;
     private FirebaseFirestore firestore;
@@ -54,18 +46,21 @@ public class Fragment_Chat extends Fragment {
     private ChatListAdapter adapter;
     private List<ChatListModel> list;
     private ArrayList<String> allUserID;
-    private RecyclerView recyclerView;
     private FragmentChatBinding binding;
+
+    // Default constructor for the Fragment. No special initialization is needed here.
+    public Fragment_Chat() {
+        // Required empty public constructor
+    }
 
     // onCreateView method is called when the fragment's view is created. It's where we set up the UI for the fragment.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment, which is defined in fragment_chat.xml
-        // This creates a view hierarchy from the layout file.
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment__chat, container, false);
 
-        // Create a list to hold the chat data objects, which will be displayed in the RecyclerView.
+        // Initialize list and allUserID
         list = new ArrayList<>();
         allUserID = new ArrayList<>();
 
@@ -73,11 +68,13 @@ public class Fragment_Chat extends Fragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ChatListAdapter(list, getContext());
         binding.recyclerView.setAdapter(adapter);
+
+        // Initialize Firebase instances
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
         firestore = FirebaseFirestore.getInstance();
 
-
+        // Start fetching chat list data if user is logged in
         if (firebaseUser != null) {
             getChatList();
         }
@@ -86,8 +83,13 @@ public class Fragment_Chat extends Fragment {
         return binding.getRoot();
     }
 
+    // Method to get chat list from Firebase Realtime Database
     private void getChatList() {
-        binding.progressCircular.setVisibility(View.VISIBLE);
+        // Hide progress and show invite friends section if there are no chats
+        binding.progressCircular.setVisibility(View.GONE);
+        binding.recyclerView.setVisibility(View.GONE); // Hide chat list
+        binding.inInvite.setVisibility(View.VISIBLE); // Show invite friends section
+
         reference.child("ChatList").child(firebaseUser.getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -97,61 +99,79 @@ public class Fragment_Chat extends Fragment {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             String userID = Objects.requireNonNull(snapshot.child("chatid").getValue()).toString();
                             Log.d(TAG, "onDataChange: userid" + userID);
-                            binding.progressCircular.setVisibility(View.GONE);
 
                             allUserID.add(userID);
                         }
-                        getUserInfo();
+
+                        // If no chat data is found, show the invite section and hide progress
+                        if (allUserID.isEmpty()) {
+                            binding.recyclerView.setVisibility(View.GONE); // Hide chat list
+                            binding.inInvite.setVisibility(View.VISIBLE); // Show invite friends section
+                        } else {
+                            getUserInfo();
+                        }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Log.d(TAG, "onCancelled: " + error.getMessage());
                     }
                 });
     }
 
+    // Method to fetch user info for all users in the chat list
     private void getUserInfo() {
+        binding.progressCircular.setVisibility(View.VISIBLE); // Show progress while fetching user data
+        binding.recyclerView.setVisibility(View.VISIBLE); // Show the RecyclerView once user data is fetched
+        binding.inInvite.setVisibility(View.GONE); // Hide invite section once chat data exists
+
         handler.post(new Runnable() {
             @Override
             public void run() {
                 for (String userId : allUserID) {
-                    firestore.collection("Users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            Log.d(TAG, "onSuccess: add " + documentSnapshot.getString("username"));
-                            try {
-                                ChatListModel chat = new ChatListModel(
-                                        documentSnapshot.getString("userID"),
-                                        documentSnapshot.getString("username"),
-                                        "This is description..",
-                                        "",
-                                        documentSnapshot.getString("imageProfile")
-                                        , documentSnapshot.getString("userPhone")
-                                        , documentSnapshot.getString("bio")
-                                );
-                                list.add(chat);
-                            } catch (Exception e) {
-                                Log.d(TAG, "onSuccess :" + e.getMessage());
-                            }
-                            if (adapter != null) {
-                                adapter.notifyItemInserted(0);
-                                adapter.notifyDataSetChanged();
-
-                                Log.d(TAG, "onSuccess: adapter" + adapter.getItemCount());
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "onFailure : L" + e.getMessage());
-                        }
-                    });
+                    firestore.collection("Users").document(userId).get()
+                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    Log.d(TAG, "onSuccess: add " + documentSnapshot.getString("username"));
+                                    try {
+                                        // Create a new ChatListModel object for each user
+                                        ChatListModel chat = new ChatListModel(
+                                                documentSnapshot.getString("userID"),
+                                                documentSnapshot.getString("username"),
+                                                "This is description..",
+                                                "",
+                                                documentSnapshot.getString("imageProfile"),
+                                                documentSnapshot.getString("userPhone"),
+                                                documentSnapshot.getString("bio")
+                                        );
+                                        list.add(chat);
+                                    } catch (Exception e) {
+                                        Log.d(TAG, "onSuccess: " + e.getMessage());
+                                    }
+                                    // Notify the adapter that new data has been added
+                                    if (adapter != null) {
+                                        adapter.notifyItemInserted(list.size() - 1);
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, "onFailure: " + e.getMessage());
+                                }
+                            });
                 }
+
+                // After data is loaded, hide progress and show chat list
+                binding.progressCircular.setVisibility(View.GONE); // Hide progress
             }
         });
-
-
     }
 
+    // Method to handle invite friend button click
+    public void onInviteFriendClicked(View view) {
+        // Handle the logic for inviting a friend, such as opening a contact picker
+        Log.d(TAG, "Invite Friend button clicked");
+    }
 }

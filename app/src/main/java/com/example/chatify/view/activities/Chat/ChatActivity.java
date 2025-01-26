@@ -249,6 +249,7 @@ public class ChatActivity extends AppCompatActivity {
                     .putExtra("userProfile", userProfile)
                     .putExtra("username", userName)
                     .putExtra("userPhone", userPhone)
+                    .putExtra("bio", UserBio)
             );
         });
 
@@ -300,19 +301,20 @@ public class ChatActivity extends AppCompatActivity {
     private void readChat() {
         try {
             DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-            layoutManager.setStackFromEnd(true);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            layoutManager.setStackFromEnd(true);  // Ensures messages are at the bottom
             binding.recyclerView.setLayoutManager(layoutManager);
-            adapter = new ChatsAdapter(receiverID,list, ChatActivity.this);
+            adapter = new ChatsAdapter(receiverID, list, ChatActivity.this);
             binding.recyclerView.setAdapter(adapter);
+
+            // Listen for chat messages
             reference1.child("Chats").child(FirebaseAuth.getInstance().getUid() + receiverID).child("msg")
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            list.clear();
+                            list.clear();  // Clear the existing messages to avoid duplicates
                             if (snapshot.exists()) {
                                 for (DataSnapshot snap : snapshot.getChildren()) {
-
                                     String dateTime = snap.child("dateTime").getValue(String.class);
                                     String receiver = snap.child("receiver").getValue(String.class);
                                     String sender = snap.child("sender").getValue(String.class);
@@ -321,25 +323,31 @@ public class ChatActivity extends AppCompatActivity {
                                     String img_name = snap.child("ImageName").getValue(String.class);
 
                                     Chats chats;
-                                    if(img_name == null)  chats = new Chats(dateTime, textMessage, type, sender, receiver);
-                                    else{
-                                        chats = new Chats(dateTime, textMessage, type, sender, receiver,img_name);
-                                        Log.d("empty07","fine okay");
+                                    if (img_name == null) {
+                                        chats = new Chats(dateTime, textMessage, type, sender, receiver);
+                                    } else {
+                                        chats = new Chats(dateTime, textMessage, type, sender, receiver, img_name);
                                     }
                                     list.add(chats);
                                 }
                             }
-                            adapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();  // Notify adapter that data has changed
+
+                            // Scroll to the latest message
+                            binding.recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
+                            // Handle error
+                            Log.e("ChatActivity", "Error loading chat messages: " + error.getMessage());
                         }
                     });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     private void setImage() {
 

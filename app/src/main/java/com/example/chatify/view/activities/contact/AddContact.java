@@ -1,13 +1,18 @@
 package com.example.chatify.view.activities.contact;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +27,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.adapter.ContactAdapter;
 import com.example.chatify.databinding.ActivityAddContactBinding;
@@ -55,6 +59,10 @@ public class AddContact extends AppCompatActivity {
     private ImageView imageView;
     private TextView txtView, txtView2;
 
+    public static final int REQUEST_READ_CONTACTS = 79;
+    private ListView contactlist;
+    private ArrayList mobileArray;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +84,10 @@ public class AddContact extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
 
         if (firebaseUser != null) {
+            getContactFromPhone();
+            //getContactList();
+        }
+        if (mobileArray != null){
             getContactList();
         }
 
@@ -106,7 +118,81 @@ public class AddContact extends AppCompatActivity {
         imageView.setOnClickListener(v -> navigateBackToMainActivity());
     }
 
+    private void getContactFromPhone() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
+                == PackageManager.PERMISSION_GRANTED) {
+            mobileArray = getAllPhoneContacts();
+        } else {
+            requestPermission();
+        }
+
+    }
+
+    private void requestPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_CONTACTS)) {
+            // show UI part if you want here to show some rationale !!!
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_CONTACTS},
+                    REQUEST_READ_CONTACTS);
+        }
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_CONTACTS)) {
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_CONTACTS},
+                    REQUEST_READ_CONTACTS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_READ_CONTACTS: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mobileArray = getAllPhoneContacts();
+                } else {
+                  finish();
+                }
+                return;
+            }
+        }
+    }
+    @SuppressLint("Range")
+    private ArrayList getAllPhoneContacts() {
+        ArrayList<String> phoneList = new ArrayList<>();
+        ContentResolver cr = getContentResolver();
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                null, null, null, null);
+        if ((cur != null ? cur.getCount() : 0) > 0) {
+            while (cur.moveToNext()) {
+                @SuppressLint("Range") String id = cur.getString(
+                        cur.getColumnIndex(ContactsContract.Contacts._ID));
+//                @SuppressLint("Range") String name = cur.getString(cur.getColumnIndex(
+//                        ContactsContract.Contacts.DISPLAY_NAME));
+//                nameList.add(name);
+                if (cur.getInt(cur.getColumnIndex( ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                    Cursor pCur = cr.query(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                            new String[]{id}, null);
+                    while (pCur.moveToNext()) {
+                        String phoneNo = pCur.getString(pCur.getColumnIndex(
+                                ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        phoneList.add(phoneNo);
+                    }
+                    pCur.close();
+                }
+            }
+        }
+        if (cur != null) {
+            cur.close();
+        }
+        return phoneList;
+    }
+
     private void getContactList() {
+
+
         firestore.collection("Users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -117,21 +203,35 @@ public class AddContact extends AppCompatActivity {
                     String userName = snapshot.getString("username");
                     String imageUrl = snapshot.getString("imageProfile");
                     String userBio = snapshot.getString("bio");
+                    String userPhone = snapshot.getString("userPhone");
 
                     Users user = new Users();
                     user.setUserID(userID);
                     user.setBio(userBio);
                     user.setUsername(userName);
                     user.setImageProfile(imageUrl);
+                    user.setUserPhone(userPhone);
 
                     if (userID != null && !userID.equals(firebaseUser.getUid())) {
-                        list.add(user);
+                        if (mobileArray.contains(user.getUserPhone())){
+                            list.add(user);
+                        }
                     }
                 }
+
+//                for (Users user : list){
+//                    if (mobileArray.contains(user.getUserPhone())){
+//                        Log.d(TAG, "getContactList : true" + user.getUserPhone());
+//                    }else {
+//                        Log.d(TAG, "getContactList : false" + user.getUserPhone());
+//                    }
+//                }
+
                 adapter = new ContactAdapter(list, AddContact.this);
                 binding.contactsRecyclerView.setAdapter(adapter);
             }
         });
+
     }
 
     private void requestContactPermissions() {
@@ -150,29 +250,6 @@ public class AddContact extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_READ_CONTACTS: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted for reading contacts
-                } else {
-                    // Permission denied, you might want to show a message to the user
-                }
-                return;
-            }
-            case PERMISSIONS_REQUEST_WRITE_CONTACTS: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted for writing contacts
-                } else {
-                    // Permission denied, you might want to show a message to the user
-                }
-                return;
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
