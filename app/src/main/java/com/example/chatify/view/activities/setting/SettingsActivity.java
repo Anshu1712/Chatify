@@ -60,10 +60,10 @@ public class SettingsActivity extends AppCompatActivity {
         if(!CloudinaryHelper.INSTANCE.getStarted()) CloudinaryHelper.INSTANCE.initializeConfig(this);
         CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid()+"@userinfo",binding.imageProfile);
 
-        binding.delAccount.setOnClickListener(v ->{
-            CloudinaryHelper.INSTANCE.deleteImageAsync(FirebaseAuth.getInstance().getUid().toString()+"@userInfo");
-            Toast.makeText(this,"deleted",Toast.LENGTH_SHORT).show();
-        });
+//        binding.delAccount.setOnClickListener(v ->{
+//            CloudinaryHelper.INSTANCE.deleteImageAsync(FirebaseAuth.getInstance().getUid().toString()+"@userInfo");
+//            Toast.makeText(this,"deleted",Toast.LENGTH_SHORT).show();
+//        });
 
 
         // Initialize Firebase Firestore and Authentication instances
@@ -142,7 +142,7 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         // Get the "username" from the Firestore document and display it in the layout
                         String userName = ""+documentSnapshot.get("username");
-                        String userBio = Objects.requireNonNull(documentSnapshot.get("bio")).toString();
+                        String userBio = "" + documentSnapshot.get("bio");
                         binding.nameTxt.setText(userName);  // Set the fetched username to the corresponding TextView
                         binding.bioTxt.setText(userBio);  // Set the fetched bio
                     }

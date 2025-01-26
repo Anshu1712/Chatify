@@ -5,6 +5,12 @@
     <uses-sdk
         android:minSdkVersion="25"
         tools:overrideLibrary="com.zegocloud.uikit.prebuilt.call" />
+<<<<<<< HEAD
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+=======
+>>>>>>> 0e4b0613a576b5fcea33591143b294a569f5b79b
     <!-- Permission to read contacts -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -27,6 +33,9 @@
         android:theme="@style/Theme.Chatify"
         tools:ignore="ExtraText"
         tools:targetApi="31">
+        <activity
+            android:name=".view.activities.auth.login"
+            android:exported="false" />
         <activity
             android:name=".call.videoCall"
             android:exported="false" />
