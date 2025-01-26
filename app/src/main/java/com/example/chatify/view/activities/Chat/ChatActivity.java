@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -94,6 +95,7 @@ public class ChatActivity extends AppCompatActivity {
         userProfile = intent.getStringExtra("imageProfile");
         userPhone = intent.getStringExtra("userPhone");
         UserBio = intent.getStringExtra("bio");
+
         videocall = findViewById(R.id.video);
 
         if (receiverID != null) {
@@ -189,6 +191,7 @@ public class ChatActivity extends AppCompatActivity {
 //                initializeZego(userName,receiverID);
 //            }
 //        },1500);
+<<<<<<< HEAD
 
         initializeZego();
 
@@ -198,7 +201,66 @@ public class ChatActivity extends AppCompatActivity {
             binding.video.setInvitees(Collections.singletonList(new ZegoUIKitUser(receiverID)));
         });
 
+
     }
+//
+//    void audiocall() {
+//        // Check if the user is logged in to Zego before sending the invitation
+//        if (ZegoUIKitPrebuiltCallService.isUserLoggedIn()) {
+//            audiocall.setIsVideoCall(false); // Set as an audio call
+//            audiocall.setResourceID("zego_uikit_call"); // Set the resource ID for audio call
+//
+//            // Set invitee with correct user data
+//            ZegoUIKitUser user = new ZegoUIKitUser(userName, receiverID);
+//            audiocall.setInvitees(Collections.singletonList(user)); // Set the invitee for the call
+//
+//            // Send the audio call invitation when button is clicked
+//            audiocall.setOnClickListener(v -> {
+//                Log.d("Zego", "Sending Audio Call Invitation");
+//                audiocall.sendInvitation(); // Sends the invitation for audio call
+//            });
+//        } else {
+//            Log.d("Zego", "User not logged in to Zego. Cannot send invitation.");
+//            Toast.makeText(this, "User is not logged in to Zego. Please try again.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    void videocall() {
+//        // Check if the user is logged in to Zego before sending the invitation
+//        if (ZegoUIKitPrebuiltCallService.isUserLoggedIn()) {
+//            videocall.setIsVideoCall(true); // Set as a video call
+//            videocall.setResourceID("zego_uikit_call"); // Set the resource ID for video call
+//
+//            // Set invitee with correct user data
+//            ZegoUIKitUser user = new ZegoUIKitUser(userName, receiverID);
+//            videocall.setInvitees(Collections.singletonList(user)); // Set the invitee for the call
+//
+//            // Send the video call invitation when button is clicked
+//            videocall.setOnClickListener(v -> {
+//                Log.d("Zego", "Sending Video Call Invitation");
+//                videocall.sendInvitation(); // Sends the invitation for video call
+//            });
+//        } else {
+//            Log.d("Zego", "User not logged in to Zego. Cannot send invitation.");
+//            Toast.makeText(this, "User is not logged in to Zego. Please try again.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+//    void initializeZego(String userName, String receiverID) {
+//        long appID = 1404366264; // Your Zego App ID
+//        String appSign = "48af2a5ee5ed0f67712fce2b6599630f7d45a252ab698fa6d1f26c747bfd014f"; // Your Zego App Sign
+//
+//        // Initialize the call invitation configuration
+//        ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
+//
+//        // Use the Firebase user ID as Zego user ID
+//        String zegoUserID = firebaseUser.getUid();
+//
+//        // Initialize Zego SDK with necessary parameters
+//        ZegoUIKitPrebuiltCallService.init(getApplication(), appID, appSign, userName, zegoUserID, callInvitationConfig);
+//
+//        Log.d("Zego", "Zego initialized successfully with user: " + userName);
+//    }
 //
 //    void audiocall() {
 //        // Check if the user is logged in to Zego before sending the invitation
