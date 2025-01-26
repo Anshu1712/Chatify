@@ -1,9 +1,15 @@
 package com.example.chatify.view.activities.Chat;
 
+import static im.zego.connection.internal.ZegoConnectionImpl.context;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -16,6 +22,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +37,7 @@ import com.example.chatify.databinding.ActivityChatBinding;
 import com.example.chatify.model.chat.Chats;
 import com.example.chatify.view.activities.Profile.UserProfileActivity;
 import com.example.chatify.view.activities.dialog.DialogReviewSendImage;
+import com.google.api.LogDescriptor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +56,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -66,6 +78,13 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+            }
+        }
+
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
 
@@ -76,7 +95,7 @@ public class ChatActivity extends AppCompatActivity {
         userProfile = intent.getStringExtra("imageProfile");
         userPhone = intent.getStringExtra("userPhone");
         UserBio = intent.getStringExtra("bio");
-        audiocall = findViewById(R.id.audio);
+
         videocall = findViewById(R.id.video);
 
         if (receiverID != null) {
@@ -89,7 +108,6 @@ public class ChatActivity extends AppCompatActivity {
         if(!CloudinaryHelper.INSTANCE.getStarted()) CloudinaryHelper.INSTANCE.initializeConfig(this);
         CloudinaryHelper.INSTANCE.fetchThatImage(receiverID + "@userinfo", binding.imageProfile);
 
-        // Back button click listener
         binding.backbtn.setOnClickListener(view -> finish());
 
 
@@ -139,7 +157,6 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         initBtnClick();
-
         list = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
         layoutManager.setStackFromEnd(true);
@@ -162,7 +179,7 @@ public class ChatActivity extends AppCompatActivity {
                 startActivityForResult(pick,IMAGE_GALLERY_REQUEST);
             }
         });
-
+        Log.d("info", firebaseUser.getUid()+" "+receiverID);
         readChat();
 
 //        Handler handler = new Handler();
@@ -174,7 +191,60 @@ public class ChatActivity extends AppCompatActivity {
 //                initializeZego(userName,receiverID);
 //            }
 //        },1500);
+<<<<<<< HEAD
+
+        initializeZego();
+
+        binding.video.setOnClickListener((v) -> {
+            binding.video.setIsVideoCall(true);
+            binding.video.setResourceID("zego_chat_9");  // don't touch it !!!!!!!!
+            binding.video.setInvitees(Collections.singletonList(new ZegoUIKitUser(receiverID)));
+        });
+
+
     }
+//
+//    void audiocall() {
+//        // Check if the user is logged in to Zego before sending the invitation
+//        if (ZegoUIKitPrebuiltCallService.isUserLoggedIn()) {
+//            audiocall.setIsVideoCall(false); // Set as an audio call
+//            audiocall.setResourceID("zego_uikit_call"); // Set the resource ID for audio call
+//
+//            // Set invitee with correct user data
+//            ZegoUIKitUser user = new ZegoUIKitUser(userName, receiverID);
+//            audiocall.setInvitees(Collections.singletonList(user)); // Set the invitee for the call
+//
+//            // Send the audio call invitation when button is clicked
+//            audiocall.setOnClickListener(v -> {
+//                Log.d("Zego", "Sending Audio Call Invitation");
+//                audiocall.sendInvitation(); // Sends the invitation for audio call
+//            });
+//        } else {
+//            Log.d("Zego", "User not logged in to Zego. Cannot send invitation.");
+//            Toast.makeText(this, "User is not logged in to Zego. Please try again.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    void videocall() {
+//        // Check if the user is logged in to Zego before sending the invitation
+//        if (ZegoUIKitPrebuiltCallService.isUserLoggedIn()) {
+//            videocall.setIsVideoCall(true); // Set as a video call
+//            videocall.setResourceID("zego_uikit_call"); // Set the resource ID for video call
+//
+//            // Set invitee with correct user data
+//            ZegoUIKitUser user = new ZegoUIKitUser(userName, receiverID);
+//            videocall.setInvitees(Collections.singletonList(user)); // Set the invitee for the call
+//
+//            // Send the video call invitation when button is clicked
+//            videocall.setOnClickListener(v -> {
+//                Log.d("Zego", "Sending Video Call Invitation");
+//                videocall.sendInvitation(); // Sends the invitation for video call
+//            });
+//        } else {
+//            Log.d("Zego", "User not logged in to Zego. Cannot send invitation.");
+//            Toast.makeText(this, "User is not logged in to Zego. Please try again.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
 //    void initializeZego(String userName, String receiverID) {
 //        long appID = 1404366264; // Your Zego App ID
@@ -405,6 +475,16 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    void initializeZego() {
+        long appID = 1504216421;   // yourAppID
+        String appSign = "394fa9d76da7090689c6253c135014074cd32ccd5c3ea9a82fe4df9268e3aa9b";
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userName = userID;
+
+        ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
+
+        ZegoUIKitPrebuiltCallService.init(getApplication(), appID, appSign, userID, userName,callInvitationConfig);
+    }
     public String getUserBio() {
         return UserBio;
     }

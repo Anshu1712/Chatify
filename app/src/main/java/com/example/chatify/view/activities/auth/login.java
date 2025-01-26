@@ -4,31 +4,43 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chatify.R;
-import com.example.chatify.model.user.Users;
+import com.example.chatify.view.MainActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-public class emailverification extends AppCompatActivity {
+public class login extends AppCompatActivity {
 
     private EditText email;
     private MaterialButton registerButton;
-    private FirebaseFirestore firestore;
     private EditText password;
     private FirebaseAuth auth;
+
+    private MaterialButton sign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emailverification);
+        setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
+        sign = findViewById(R.id.singup);
+
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        sign.setOnClickListener((v)->{
+            Intent intent = new Intent(this, emailverification.class);
+            startActivity(intent);
+            finish();
+        });
+
 
         registerButton = findViewById(R.id.verify);
         email = findViewById(R.id.email);
@@ -46,14 +58,11 @@ public class emailverification extends AppCompatActivity {
 
     private void registerUser(String emailAddress, String password) {
 
-        auth.createUserWithEmailAndPassword(emailAddress, password)
+        auth.signInWithEmailAndPassword(emailAddress, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         //sendVerificationEmail();
-                        firestore.collection("Users").document(auth.getCurrentUser().getUid()).set(new Users(auth.getCurrentUser().getUid(),"name","","","","","","","",""))
-                                .addOnSuccessListener(unused -> {
-                                });
-                        Intent intent = new Intent(this,login.class);
+                        Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
