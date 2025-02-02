@@ -14,11 +14,8 @@
             android:id="@+id/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
             android:layout_alignParentTop="true"
             android:layout_marginTop="0dp"
-=======
->>>>>>> 0e4b0613a576b5fcea33591143b294a569f5b79b
             android:background="@color/md_theme_primary">
 
             <LinearLayout
@@ -108,20 +105,20 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:padding="5dp"
+
                     android:src="@drawable/videoo" /> <!-- Add margin to the start -->
 
-<<<<<<< HEAD
-=======
-                <com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton
-                    android:id="@+id/audio"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="10dp"
-                    android:padding="5dp"
-                    android:src="@drawable/calll" />
 
->>>>>>> 0e4b0613a576b5fcea33591143b294a569f5b79b
+<!--                <com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton-->
+<!--                    android:id="@+id/audio"-->
+<!--                    android:layout_width="35dp"-->
+<!--                    android:layout_height="35dp"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:src="@drawable/calll" />-->
+
+
                 <ImageView
                     android:id="@+id/more"
                     android:layout_width="35dp"

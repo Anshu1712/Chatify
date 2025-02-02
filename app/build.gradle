@@ -60,30 +60,19 @@ dependencies {
     implementation(libs.cloudinary.cloudinary.android.download)
     implementation(libs.com.cloudinary.cloudinary.android.preprocess)
     implementation(libs.picasso)
-
     implementation(libs.google.firebase.auth)
     implementation(platform(libs.firebase.bom))
-
-
     implementation libs.viewpager2
-
     implementation libs.recyclerview
     implementation libs.circleimageview
     implementation libs.lottie
-
     implementation libs.glide
     implementation(libs.cloudinary.cloudinary.android.download)
     implementation(libs.com.cloudinary.cloudinary.android.preprocess)
     implementation libs.com.cloudinary.cloudinary.android  // or the latest version
-
     implementation libs.zoomage
-
     implementation libs.biometric
-    
-<<<<<<< HEAD
     implementation ("com.github.ZEGOCLOUD:zego_uikit_prebuilt_call_android:+")
     implementation ("com.github.ZEGOCLOUD:zego_uikit_signaling_plugin_android:+")
-=======
     implementation (libs.zego.uikit.prebuilt.call.android)
->>>>>>> 0e4b0613a576b5fcea33591143b294a569f5b79b
 }

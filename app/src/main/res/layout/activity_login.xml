@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <RelativeLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
@@ -15,7 +14,7 @@
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal"
             android:padding="5dp">
 
@@ -25,17 +24,10 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Enter Your email.."
+                android:text="@string/enter_your_email_address"
                 android:textColor="@color/md_theme_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:src="@drawable/baseline_more_vert_24" />
         </LinearLayout>
 
         <LinearLayout
@@ -77,7 +69,7 @@
                 android:gravity="center_horizontal"
                 android:padding="5dp"
                 android:layout_gravity="center"
-                android:text="@string/welcome_to_chatify"
+                android:text="@string/chatify_will_send_an_sms_message_to_verify_your_phone_number"
                 android:textAllCaps="true"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -86,8 +78,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:orientation="horizontal"
+                android:padding="2dp">
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -100,13 +92,20 @@
                         android:id="@+id/email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="enter your email"
+                        android:hint="@string/enter_email_address"
                         android:importantForAccessibility="yes"
-                        android:inputType="textPhonetic"
-                        />
+                        android:inputType="textPhonetic" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dp">
+
+            <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp">
@@ -115,28 +114,53 @@
                         android:id="@+id/passcode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="enter your password"
+                        android:hint="@string/enter_password"
                         android:importantForAccessibility="yes"
                         android:inputType="textPhonetic"
                         android:maxLength="13"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
-
             </LinearLayout>
 
-        </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verify"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:text="@string/sign_in"
+                android:textColor="@color/md_theme_primary"
+                android:textStyle="bold" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/verify"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linearLayout2"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="100dp"
-            android:text="E n t e r"
-            android:textColor="@color/md_theme_primary"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/forgotPasswordText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="16dp"
+                android:text="@string/forgot_password"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/notRegisteredTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/not_registered_yet_sign_up"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/useOtherMethodTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="25dp"
+                android:text="@string/use_other_method" />
+
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/singup"
@@ -144,14 +168,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout2"
-            android:layout_alignStart="@+id/verify"
-            android:layout_alignEnd="@+id/verify"
-            android:layout_centerVertical="true"
-
+            android:layout_centerHorizontal="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="0dp"
-            android:text="S i g n u p ?"
+            android:text="@string/sing_up"
             android:textColor="@color/md_theme_primary"
             android:textStyle="bold" />
 

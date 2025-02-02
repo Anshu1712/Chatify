@@ -39,7 +39,6 @@ public class ChatsAdapter extends RecyclerView.Adapter {
         this.recUid = recUid;
     }
 
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

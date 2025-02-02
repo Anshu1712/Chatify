@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ import com.example.chatify.Clouddinary.CloudinaryHelper.CloudinaryHelper;
 import com.example.chatify.R;
 import com.example.chatify.common.Common;
 import com.example.chatify.databinding.ActivityProfileBinding;
+import com.example.chatify.view.MainActivity;
 import com.example.chatify.view.activities.display.ViewImageActivity;
 import com.example.chatify.view.activities.setting.SettingsActivity;
 import com.example.chatify.view.activities.startup.SplachActivity;
@@ -58,8 +60,6 @@ public class Profile extends AppCompatActivity {
     private int IMAGE_GALLERY_REQUEST = 111;
     private Uri imageUri;
 
-    private String purpose;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +70,9 @@ public class Profile extends AppCompatActivity {
         // Call a method to set up edge-to-edge UI, adjusting for system bars (status bar, navigation bar)
         setupEdgeToEdgeDisplay();
 
-
-        if (!CloudinaryHelper.INSTANCE.getStarted())
+        if (!CloudinaryHelper.INSTANCE.getStarted()) {
             CloudinaryHelper.INSTANCE.initializeConfig(this);
+        }
 
         bottomSheetDialog = new BottomSheetDialog(this);
 
@@ -85,8 +85,12 @@ public class Profile extends AppCompatActivity {
         // Set the toolbar as the action bar (top navigation bar)
         setSupportActionBar(toolbar);
 
+        fetchUserProfileData();
+
         // iise code se profile photo ayega
-        if (!CloudinaryHelper.INSTANCE.getStarted())CloudinaryHelper.INSTANCE.initializeConfig(this);
+        if (!CloudinaryHelper.INSTANCE.getStarted()) {
+            CloudinaryHelper.INSTANCE.initializeConfig(this);
+        }
         CloudinaryHelper.INSTANCE.fetchThatImage(FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo", binding.Change);
 
         // Set a click listener on the back button to handle back navigation
@@ -134,12 +138,30 @@ public class Profile extends AppCompatActivity {
                     });
         });
 
-        binding.button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialogSignOut();
-            }
-        });
+        binding.button5.setOnClickListener(view -> showDialogSignOut());
+    }
+
+    private void fetchUserProfileData() {
+        if (firebaseUser != null) {
+            String userID = firebaseUser.getUid();  // Get user ID from FirebaseAuth.
+
+            // Fetch user data from Firestore
+            firestore.collection("Users")
+                    .document(userID)  // Get the document for the current user.
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            // Retrieve the phone number from Firestore
+                            String phoneNumber = documentSnapshot.getString("userPhone");
+
+                            // Display the phone number in the TextView (or any other UI element)
+                            binding.phone.setText(phoneNumber != null ? phoneNumber : "No phone number set");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(Profile.this, "Failed to load profile data", Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 
     private void showButtomSheetPickPhoto() {
@@ -148,12 +170,7 @@ public class Profile extends AppCompatActivity {
         }
         View view = getLayoutInflater().inflate(R.layout.botton_sheet, null);
         bottomSheetDialog.setContentView(view);
-        view.findViewById(R.id.gallery).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGallery();
-            }
-        });
+        view.findViewById(R.id.gallery).setOnClickListener(view1 -> openGallery());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Objects.requireNonNull(bottomSheetDialog.getWindow()).addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -172,15 +189,12 @@ public class Profile extends AppCompatActivity {
 
         EditText edBio = view.findViewById(R.id.phoneNumberEt6);
 
-        ((View) view.findViewById(R.id.button8)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (TextUtils.isEmpty(edBio.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Bio Section Can't be empty", Toast.LENGTH_SHORT).show();
-                } else {
-                    updateBio(edBio.getText().toString());
-                    bsDialog.dismiss();
-                }
+        ((View) view.findViewById(R.id.button8)).setOnClickListener(view12 -> {
+            if (TextUtils.isEmpty(edBio.getText().toString())) {
+                Toast.makeText(getApplicationContext(), "Bio Section Can't be empty", Toast.LENGTH_SHORT).show();
+            } else {
+                updateBio(edBio.getText().toString());
+                bsDialog.dismiss();
             }
         });
         bsDialog = new BottomSheetDialog(this);
@@ -203,7 +217,7 @@ public class Profile extends AppCompatActivity {
 
         EditText edUserName = view.findViewById(R.id.phoneNumberEt4);
 
-        ((View) view.findViewById(R.id.button4)).setOnClickListener(view1 -> {
+        ((View) view.findViewById(R.id.button4)).setOnClickListener(view12 -> {
             if (TextUtils.isEmpty(edUserName.getText().toString())) {
                 Toast.makeText(getApplicationContext(), "Name Section Can't be empty", Toast.LENGTH_SHORT).show();
             } else {
@@ -222,6 +236,110 @@ public class Profile extends AppCompatActivity {
         bsDialogEditName.show();
     }
 
+    private void getUserInfo() {
+        firestore.collection("Users").document(firebaseUser.getUid())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    // Check if document exists
+                    if (documentSnapshot.exists()) {
+                        // Retrieve user info from Firestore
+                        String userName = documentSnapshot.getString("username");
+                        String userPhone = documentSnapshot.getString("userPhone");
+                        String userBio = documentSnapshot.getString("bio");
+                        String userEmail = documentSnapshot.getString("email");
+
+                        Log.d("ProfileActivity", "User phone: " + userPhone);  // Debugging to check phone number
+
+                        // Handle case if phone number is null or empty
+                        if (userPhone == null || userPhone.isEmpty()) {
+                            binding.phone.setText("Phone number not available");
+                        } else {
+                            binding.phone.setText(userPhone); // Display phone number
+                        }
+
+                        // Set the values to the UI components
+                        binding.nameProfile.setText(userName);  // Setting username
+                        binding.bio.setText(userBio);          // Setting bio
+                        binding.email.setText(userEmail);      // Setting email
+                    } else {
+                        // Handle case where user data does not exist in Firestore
+                        showError("User data not found");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure when fetching data
+                    showError("Failed to load user info");
+                });
+    }
+
+    // Helper method to show error message
+    private void showError(String message) {
+        Toast.makeText(Profile.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateName(String name) {
+        // Update the user name in Firestore
+        firestore.collection("Users").document(firebaseUser.getUid())
+                .update("username", name)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Show success message
+                        Toast.makeText(Profile.this, "Username updated successfully", Toast.LENGTH_SHORT).show();
+                        binding.nameProfile.setText(name);
+                    } else {
+                        // Show error message
+                        showError("Failed to update username");
+                    }
+                });
+    }
+
+    private void updateBio(String bio) {
+        // Update the user bio in Firestore
+        firestore.collection("Users").document(firebaseUser.getUid())
+                .update("bio", bio)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Show success message
+                        Toast.makeText(Profile.this, "Bio updated successfully", Toast.LENGTH_SHORT).show();
+                        binding.bio.setText(bio);
+                    } else {
+                        // Show error message
+                        showError("Failed to update bio");
+                    }
+                });
+    }
+
+    private void showDialogSignOut() {
+        // Create sign-out confirmation dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to sign out?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", (dialog, id) -> signOut())
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel())
+                .create()
+                .show();
+    }
+
+    private void signOut() {
+        // Sign out the user and navigate to SplashActivity
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(Profile.this, SplachActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void openGallery() {
+        // Open the device's gallery to pick an image
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+    }
+
+    private void navigateBackToMainActivity() {
+        // Navigate back to the main activity (or wherever you need)
+        startActivity(new Intent(Profile.this, MainActivity.class));
+        finish();
+    }
+
     // This method is responsible for handling edge-to-edge UI to provide a modern immersive experience
     private void setupEdgeToEdgeDisplay() {
         // Set on apply window insets listener on the root layout (main container) of the activity
@@ -232,132 +350,5 @@ public class Profile extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
-
-    // This method retrieves user data from Firebase Firestore
-    private void getUserInfo() {
-        // Access the Firestore collection "Users" and get the document corresponding to the current user's UID
-        firestore.collection("Users").document(firebaseUser.getUid())
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    // If the document exists, retrieve the data
-                    if (documentSnapshot.exists()) {
-                        // Get the username and phone number from the Firestore document
-                        String userName = documentSnapshot.getString("username");
-                        String userPhone = documentSnapshot.getString("userPhone");
-                        String userBio = documentSnapshot.getString("bio");
-
-                        // Set the username and phone number to the corresponding TextViews in the layout
-                        binding.nameProfile.setText(userName);
-                        binding.phone.setText(userPhone);
-                        binding.bio.setText(userBio);
-                    } else {
-                        // If the document doesn't exist, log an error
-                        showError("User data not found");
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // If there's a failure when fetching data from Firestore, log the error
-                    showError("Failed to load user info");
-                });
-    }
-
-    // This method displays an error message (in this case, logs it to Logcat)
-    private void showError(String message) {
-        // Log the error message to Logcat with a tag for easy identification
-        android.util.Log.e("ProfileActivity", message);
-    }
-
-    @Override
-    public void onBackPressed() {
-        // Override the back button behavior to also call the navigateBackToMainActivity method
-        super.onBackPressed();
-        navigateBackToMainActivity();
-    }
-
-    // This method handles the navigation back to the SettingsActivity
-    private void navigateBackToMainActivity() {
-        // Create an intent to navigate to the SettingsActivity (not MainActivity as implied by the method name)
-        Intent intent = new Intent(Profile.this, SettingsActivity.class);
-
-        // Add flags to clear the activity stack and start a new task to avoid returning to the current activity
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        // Start the activity and finish the current one (Profile activity)
-        startActivity(intent);
-        finish();
-    }
-
-    private void openGallery() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select image"), IMAGE_GALLERY_REQUEST);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                binding.Change.setImageBitmap(bitmap);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (imageUri != null) {
-                String img_name = FirebaseAuth.getInstance().getCurrentUser().getUid() + "@userinfo";
-                String filePath = CloudinaryHelper.INSTANCE.getRealPathFromURI(imageUri, this).toString();
-                CloudinaryHelper.INSTANCE.uploadImage(img_name, filePath, new Function1<String, Unit>() {
-                    @Override
-                    public Unit invoke(String s) {
-                        System.out.println(s);
-                        return null;
-                    }
-                });
-
-            }
-        }
-    }
-
-    private void updateName(String newName) {
-        firestore.collection("Users").document(firebaseUser.getUid()).update("username", newName)
-                .addOnSuccessListener(unused -> {
-                    Toast.makeText(getApplicationContext(), "Update Successful", Toast.LENGTH_SHORT).show();
-                    getUserInfo();
-                });
-    }
-
-    private void updateBio(String newBio) {
-        firestore.collection("Users").document(firebaseUser.getUid()).update("bio", newBio)
-                .addOnSuccessListener(unused -> {
-                    Toast.makeText(getApplicationContext(), "Update Successful", Toast.LENGTH_SHORT).show();
-                    getUserInfo();
-                });
-    }
-
-    private void showDialogSignOut() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(Profile.this);
-        builder.setMessage("Do you want to sign out?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                dialog.cancel();
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(Profile.this, SplachActivity.class));
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 }

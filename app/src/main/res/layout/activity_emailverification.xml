@@ -15,7 +15,7 @@
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal"
             android:padding="5dp">
 
@@ -25,17 +25,11 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Enter Your email.."
+                android:text="@string/enter_your_email"
                 android:textColor="@color/md_theme_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:src="@drawable/baseline_more_vert_24" />
         </LinearLayout>
 
         <LinearLayout
@@ -85,8 +79,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:orientation="horizontal"
+                android:padding="2dp">
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -99,11 +93,19 @@
                         android:id="@+id/email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="enter your email"
+                        android:hint="@string/enter_email_address"
                         android:importantForAccessibility="yes"
                         android:inputType="textPhonetic"
                          />
                 </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -114,7 +116,7 @@
                         android:id="@+id/passcode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="enter your password"
+                        android:hint="@string/enter_password"
                         android:importantForAccessibility="yes"
                         android:inputType="textPhonetic"
                         android:maxLength="13"
@@ -126,16 +128,27 @@
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/verify"
+            android:id="@+id/verify1"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout2"
             android:layout_centerInParent="true"
             android:layout_marginTop="100dp"
-            android:text="Verify"
+            android:text="@string/verify"
             android:textColor="@color/md_theme_primary"
             android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/resendVerificationEmailButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resend Verification Email"
+            android:layout_below="@+id/verify1"
+            android:enabled="false"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="16dp"/>
+
 
     </RelativeLayout>
 </layout>

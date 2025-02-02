@@ -1,9 +1,11 @@
 package com.example.chatify.view.activities.auth;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,15 +13,16 @@ import com.example.chatify.R;
 import com.example.chatify.view.MainActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 
 public class login extends AppCompatActivity {
 
-    private EditText email;
-    private MaterialButton registerButton;
-    private EditText password;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private MaterialButton signUpButton;
+    private MaterialButton loginButton;
     private FirebaseAuth auth;
-
-    private MaterialButton sign;
+    private ProgressDialog progressDialog; // Declare ProgressDialog
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,58 +30,87 @@ public class login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance();
-        sign = findViewById(R.id.singup);
 
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
+        // If the user is already signed in, redirect to MainActivity
+        if (auth.getCurrentUser() != null) {
+            navigateToMainActivity();
         }
 
-        sign.setOnClickListener((v)->{
-            Intent intent = new Intent(this, emailverification.class);
-            startActivity(intent);
-            finish();
-        });
+        // Initialize UI components
+        signUpButton = findViewById(R.id.singup);
+        loginButton = findViewById(R.id.verify);
+        emailEditText = findViewById(R.id.email);
+        passwordEditText = findViewById(R.id.passcode);
 
+        // Initialize the ProgressDialog
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Signing in...");
+        progressDialog.setCancelable(false); // Prevent cancellation by tapping outside
 
-        registerButton = findViewById(R.id.verify);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.passcode);
+        // Set listeners for buttons
+        signUpButton.setOnClickListener(v -> navigateToEmailVerificationActivity());
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String emailAddress = email.getText().toString();
-                String pass = password.getText().toString();
-                registerUser(emailAddress, pass);
+        loginButton.setOnClickListener(view -> {
+            String email = emailEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
+            if (isValidInput(email, password)) {
+                signInUser(email, password);
             }
         });
     }
 
-    private void registerUser(String emailAddress, String password) {
+    // Validate email and password inputs
+    private boolean isValidInput(String email, String password) {
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please fill in both fields.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!email.contains("@")) {
+            Toast.makeText(this, "Invalid email address.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 
-        auth.signInWithEmailAndPassword(emailAddress, password)
+    // Handle user sign-in
+    private void signInUser(String email, String password) {
+        // Show the progress dialog
+        progressDialog.show();
+
+        auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        //sendVerificationEmail();
-                        Intent intent = new Intent(this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
+                    // Hide the progress dialog
+                    progressDialog.dismiss();
 
+                    if (task.isSuccessful()) {
+                        navigateToMainActivity();
+                    } else {
+                        handleSignInError(task.getException());
                     }
                 });
     }
 
-    private void sendVerificationEmail() {
-        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+    // Handle different sign-in errors
+    private void handleSignInError(Exception exception) {
+        if (exception instanceof FirebaseAuthException) {
+            String errorMessage = exception.getMessage();
+            Toast.makeText(this, "Sign-in failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "An unknown error occurred. Please try again.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-                    } else {
+    // Navigate to the main activity
+    private void navigateToMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
-                    }
-                });
+    // Navigate to the email verification activity (sign-up flow)
+    private void navigateToEmailVerificationActivity() {
+        Intent intent = new Intent(this, emailverification.class);
+        startActivity(intent);
+        finish();
     }
 }

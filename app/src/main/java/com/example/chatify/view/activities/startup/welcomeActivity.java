@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.chatify.R;
 import com.example.chatify.view.activities.auth.emailverification;
 import com.example.chatify.view.activities.auth.login;
-import com.example.chatify.view.activities.auth.phoneLoginActivity;
+//import com.example.chatify.view.activities.auth.phoneLoginActivity;
 import com.google.android.material.button.MaterialButton;
 
 public class welcomeActivity extends AppCompatActivity {

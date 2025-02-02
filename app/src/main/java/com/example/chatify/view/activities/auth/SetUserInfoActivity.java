@@ -112,10 +112,10 @@ public class SetUserInfoActivity extends AppCompatActivity {
 
     // Method to update user information in Firebase Firestore.
     private void doUpdate() {
-        progressDialog.setMessage("Updating...");  // Set the message for the loading dialog.
-        progressDialog.show();  // Show the ProgressDialog indicating a background operation is in progress.
+        progressDialog.setMessage("Updating...");
+        progressDialog.show();
 
-        // Get the instance of Firebase Firestore to store the user data.
+        // Get the instance of Firebase Firestore to store user data.
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
         // Get the current logged-in user from Firebase Authentication.
@@ -124,36 +124,50 @@ public class SetUserInfoActivity extends AppCompatActivity {
         if (firebaseUser != null) {  // Check if the user is authenticated.
             String userID = firebaseUser.getUid();  // Get the unique user ID from Firebase Authentication.
 
-            // Create a new Users object to hold user data.
-            Users users = new Users(userID,
-                    binding.phoneNumberEt2.getText().toString(),  // Set the username input by the user.
-                    firebaseUser.getPhoneNumber(),  // Set the phone number from Firebase authentication.
-                    "", "", "", "", "", "", binding.phoneNumberEt3.getText().toString());  // Placeholder empty fields for other user data (could be extended later).
+            // Get the phone number input by the user from the EditText.
+            String phoneNumber = binding.phoneNumberEt4.getText().toString().trim();
 
-            // Update the "Users" collection in Firestore with the new user data.
+            // Check if the phone number is empty
+            if (TextUtils.isEmpty(phoneNumber)) {
+                progressDialog.dismiss();  // Dismiss the progress dialog
+                Toast.makeText(getApplicationContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();  // Show a toast message
+                return;  // Exit the method early since phone number is required
+            }
+
+            // Create a new Users object to hold user data (including the phone number).
+            Users users = new Users(
+                    userID,
+                    binding.phoneNumberEt2.getText().toString(),  // Username
+                    phoneNumber,  // Phone number entered by the user
+                    "", "", firebaseUser.getEmail(), "", "", "", binding.phoneNumberEt3.getText().toString() // Bio and other data
+            );
+
+            // Update the Firestore "Users" collection with the updated user data.
             firebaseFirestore.collection("Users")
-                    .document(firebaseUser.getUid())  // Use the user ID as the document ID to store user data.
+                    .document(userID)  // Use the user ID as the document ID to store user data.
                     .set(users)  // Set the user object in the Firestore database.
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            progressDialog.dismiss();  // Dismiss the progress dialog when the update succeeds.
+                            progressDialog.dismiss();  // Dismiss the progress dialog when the update is successful.
                             Toast.makeText(getApplicationContext(), "Update Success", Toast.LENGTH_SHORT).show();  // Show success message.
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));  // Navigate to the MainActivity after successful update.
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));  // Navigate to MainActivity after successful update.
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();  // Dismiss the progress dialog if the update fails.
-                            Toast.makeText(getApplicationContext(), "Update Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();  // Show failure message with error details.
+                            Toast.makeText(getApplicationContext(), "Update Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();  // Show failure message.
                         }
                     });
         } else {
-            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();  // Show an error message if no authenticated user is found.
-            progressDialog.dismiss();  // Dismiss the progress dialog if user is null.
+            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();  // Show error message if user is null.
+            progressDialog.dismiss();  // Dismiss the progress dialog if user is not authenticated.
         }
     }
+
+
 
     private void pickImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

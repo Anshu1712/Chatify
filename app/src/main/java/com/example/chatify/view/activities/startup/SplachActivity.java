@@ -36,7 +36,7 @@ public class SplachActivity extends AppCompatActivity {
 
                 @Override
                 public void run() {
-                    startActivity(new Intent(SplachActivity.this, welcomeActivity.class));
+                    startActivity(new Intent(SplachActivity.this, MainActivity.class));
                     finish();
                 }
             }, 4000);
