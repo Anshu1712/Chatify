@@ -9,6 +9,7 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+
     <!-- Permission to read contacts -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,6 +20,10 @@
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <permission android:name="com.yourappname.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
@@ -31,12 +36,19 @@
         android:theme="@style/Theme.Chatify"
         tools:ignore="ExtraText"
         tools:targetApi="31">
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+        android:exported="false">
+        <intent-filter>
+            <action android:name="com.google.firebase.MESSAGING_EVENT" />
+        </intent-filter>
+    </service>
+
         <activity
             android:name=".view.activities.auth.login"
             android:exported="false" />
-        <activity
-            android:name=".call.videoCall"
-            android:exported="false" />
+
         <activity
             android:name=".view.activities.auth.ChatLockActivity"
             android:exported="false" />
@@ -65,9 +77,9 @@
         <activity
             android:name=".view.activities.auth.SetUserInfoActivity"
             android:exported="false" />
-        <activity
-            android:name=".view.activities.auth.phoneLoginActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".view.activities.auth.phoneLoginActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".view.activities.startup.welcomeActivity"
             android:exported="false" />

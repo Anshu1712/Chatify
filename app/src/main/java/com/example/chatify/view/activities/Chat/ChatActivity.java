@@ -352,15 +352,16 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+
     void initializeZego() {
         long appID = 1504216421;   // yourAppID
         String appSign = "394fa9d76da7090689c6253c135014074cd32ccd5c3ea9a82fe4df9268e3aa9b";
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String userName = userID;
+        String username = userID;
 
         ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
 
-        ZegoUIKitPrebuiltCallService.init(getApplication(), appID, appSign, userID, userName,callInvitationConfig);
+        ZegoUIKitPrebuiltCallService.init(getApplication(), appID, appSign, userID, username,callInvitationConfig);
     }
     public String getUserBio() {
         return UserBio;
