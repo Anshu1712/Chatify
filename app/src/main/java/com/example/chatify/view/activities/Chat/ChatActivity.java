@@ -5,9 +5,12 @@ import static im.zego.connection.internal.ZegoConnectionImpl.context;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -188,9 +192,30 @@ public class ChatActivity extends AppCompatActivity {
         initializeZego();
 
         binding.video.setOnClickListener((v) -> {
-            binding.video.setIsVideoCall(true);
-            binding.video.setResourceID("zego_chat_9");  // don't touch it !!!!!!!!
-            binding.video.setInvitees(Collections.singletonList(new ZegoUIKitUser(receiverID)));
+
+            Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.custom_dialog);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            ImageView btnOption1 = dialog.findViewById(R.id.btnOption1);
+            ImageView btnOption2 = dialog.findViewById(R.id.btnOption2);
+
+            btnOption1.setOnClickListener(t -> {
+                binding.video.setIsVideoCall(false);
+                binding.video.setResourceID("zego_chat_9");  // don't touch it !!!!!!!!
+                binding.video.setInvitees(Collections.singletonList(new ZegoUIKitUser(receiverID)));
+                dialog.dismiss();
+            });
+
+            btnOption2.setOnClickListener(t -> {
+                binding.video.setIsVideoCall(true);
+                binding.video.setResourceID("zego_chat_9");  // don't touch it !!!!!!!!
+                binding.video.setInvitees(Collections.singletonList(new ZegoUIKitUser(receiverID)));
+                dialog.dismiss();
+            });
+
+            dialog.show();
+
 
         });
 
